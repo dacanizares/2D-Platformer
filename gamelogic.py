@@ -9,7 +9,7 @@ class Gamelogic:
         self.tilemap = tilemap
         
         
-    def update(self,eventos):
+    def update(self, eventos):
         # Colisiones estaticas
         col = self.player.static_col
         left = (col.x - col.w / 2 + 1) / WTILE
@@ -33,13 +33,21 @@ class Gamelogic:
         min_x = self.search_left(left, top, bot)
         max_x = self.search_right(right, top, bot)
 
-        self.player.min_x = min_x + WTILE + col.w/2
-        self.player.max_x = max_x - col.w/2 
-        self.player.min_y = min_y + HTILE + col.h
-        self.player.max_y = max_y
-        
+        min_x = min_x + WTILE + col.w/2
+        max_x = max_x - col.w/2 
+        min_y = min_y + HTILE + col.h
+        max_y = max_y
+
+        if self.player.y >= max_y:
+            self.player.y = max_y
+            self.player.land = True
+        else:
+            self.player.land = False
+
+        self.player.static_col = pygame.Rect(self.player.x, self.player.y, self.player.static_col.w, self.player.static_col.h)
         self.player.update_events(eventos)
         self.player.update()
+        
             
 
     def search_top(self, top, left, right):

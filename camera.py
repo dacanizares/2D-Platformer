@@ -20,23 +20,7 @@ class Camera:
 
         if S_COLLIDER:
             col = self.player.static_col
-            rect = pygame.Rect(0,0,3,3)
-            rect.x = self.player.max_x-self.x
-            rect.y = self.player.max_y-self.y
-            game.draw_rect(rect)
-            
-            rect.x = self.player.max_x-self.x
-            rect.y = self.player.min_y-self.y
-            game.draw_rect(rect)
-
-            rect.x = self.player.min_x-self.x
-            rect.y = self.player.min_y-self.y
-            game.draw_rect(rect)
-
-            rect.x = self.player.min_x-self.x
-            rect.y = self.player.max_y-self.y
-            game.draw_rect(rect)
-            
+            rect = pygame.Rect(0,0,3,3)            
     
 
     

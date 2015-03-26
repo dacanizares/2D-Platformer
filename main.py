@@ -14,7 +14,7 @@ game.start(DISP_W, DISP_H)
 
 resources = Resources()
 
-player = Player(128, 64, pygame.Rect(0,0,30,70), resources.player)
+player = Player(128, 64, pygame.Rect(128,64,30,70), resources.player)
 tiles = [[1,-1,-1,-1,-1,-1,-1,-1],
          [1,-1,-1, 1, 1,-1,-1,-1],
          [1,-1,-1,-1,-1,-1, 0, 0],

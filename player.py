@@ -17,10 +17,8 @@ class Player:
         self.delta_frames = 0
 
         # Colisiones estaticas
-        self.min_x = -1
-        self.max_x = -1
-        self.min_y = -1
-        self.max_y = -1
+        self.last_x = x
+        self.last_y = y
         self.static_col = static_col
         
         self.walking = resources[0]
@@ -44,40 +42,27 @@ class Player:
             self.jump = events[K_UP]
             self.frame = 0
 
-    def update(self):
-        # Movimiento en X
+    def update(self):        
+        # X movement
         if self.right:
-            self.x += VEL_X
-            self.x = min(self.x, self.max_x)
+            self.x += VEL_X            
         if self.left:
-            self.x -= VEL_X
-            self.x = max(self.x, self.min_x)            
-
-        # Saltar
+            self.x -= VEL_X           
+                           
+        # Y movement
+        if self.land:
+            vy = 0
         if self.land and self.jump:
             self.vy = -VEL_y
             self.land = False
-
-        # Caer
-        if self.y < self.max_y:
-            self.land = False
-               
-        # Actualiza solo si sigue en el aire
+            
         if not self.land:
             self.vy = min(self.vy + GRAVITY, MAX_VY)
             self.y += self.vy
-            # Toca techo
-            if self.y < self.min_y:
-                self.y = self.min_y
-                self.vy = 0
-            # Movimiento en Y
-            if self.y >= self.max_y:
-                self.land = True
-                self.y = self.max_y
-                self.vy = 0
+            
         if DEBUG:
             game.debug_txt('XY: '+str(self.x)+','+str(self.y), (100,0), RED)
-        self.static_col = pygame.Rect(self.x, self.y, self.static_col.w, self.static_col.h)
+        
 
 
     def draw(self, xcam, ycam):
