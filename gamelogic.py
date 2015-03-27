@@ -10,7 +10,10 @@ class Gamelogic:
         
         
     def update(self, eventos):
-        # Colisiones estaticas
+        self.player.update_events(eventos)
+        self.player.update()
+        
+        # PENDING UPDATE X -> Y
         col = self.player.static_col
         left = (col.x - col.w / 2 + 1) / WTILE
         right = (col.x + col.w / 2 - 1) / WTILE
@@ -40,16 +43,24 @@ class Gamelogic:
 
         if self.player.y >= max_y:
             self.player.y = max_y
-            self.player.land = True
+            self.player.on_land()
         else:
-            self.player.land = False
+            self.player.on_air()
+            
+        if self.player.y <= min_y:
+            self.player.y = min_y
+            self.player.on_peak()
+            
+        if self.player.x >= max_x:
+            self.player.x = max_x
+        if self.player.x <= min_x:
+            self.player.x = min_x
 
         self.player.static_col = pygame.Rect(self.player.x, self.player.y, self.player.static_col.w, self.player.static_col.h)
-        self.player.update_events(eventos)
-        self.player.update()
+        
         
             
-
+    #PEDING FIX THIS CODE
     def search_top(self, top, left, right):
         for i in range(0, MAX_DIST_COL):
             for j in range(left, right+1):

@@ -50,18 +50,27 @@ class Player:
             self.x -= VEL_X           
                            
         # Y movement
-        if self.land:
-            vy = 0
         if self.land and self.jump:
             self.vy = -VEL_y
             self.land = False
             
-        if not self.land:
-            self.vy = min(self.vy + GRAVITY, MAX_VY)
-            self.y += self.vy
+        self.y += self.vy
             
         if DEBUG:
             game.debug_txt('XY: '+str(self.x)+','+str(self.y), (100,0), RED)
+            game.debug_txt('VY: '+str(self.vy), (100,30), RED)
+
+    def on_land(self):
+        self.land = True
+        self.vy = 0
+
+    def on_peak(self):
+        if self.vy < 0:
+            self.vy = 0
+
+    def on_air(self):
+        self.land = False
+        self.vy = min(self.vy + GRAVITY, MAX_VY)
         
 
 

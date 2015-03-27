@@ -42,4 +42,4 @@ while True:
     
     game.update()
     
-    clock.tick(30)
+    clock.tick(15)
