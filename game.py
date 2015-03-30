@@ -2,7 +2,7 @@ import pygame
 from pygame import *
 
 def start(w,h):
-    print 'One second, we are setting all things in place.'
+    print 'One second, we are awakening the character.'
     pygame.init()
     pygame.display.set_mode((w, h))
     print 'Lets go!'
@@ -18,7 +18,7 @@ def load_sprite(sheet, rectangle, colorkey = None):
         if colorkey is -1:
             colorkey = image.get_at((0,0))
         image.set_colorkey(colorkey, pygame.RLEACCEL)
-    return pygame.transform.scale2x(image)
+    return image#pygame.transform.scale2x(image)
       
 def load_sprites(sheet, rects, colorkey = None):
     return [load_sprite(sheet, rect,(0,0,0)) for rect in rects]

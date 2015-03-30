@@ -13,31 +13,33 @@ class Gamelogic:
         self.player.update_events(eventos)
         self.player.update()
         
-        # PENDING UPDATE X -> Y
         col = self.player.static_col
+
+        # Update X
         left = (col.x - col.w / 2 + 1) / WTILE
         right = (col.x + col.w / 2 - 1) / WTILE
         top = (col.y - col.h + 1) / HTILE
         bot = (col.y - 1) / HTILE
-
-        left = max(0,min(left,len(self.tilemap[0])-1))
-        right = max(0,min(right,len(self.tilemap[0])-1))
         top = max(0,min(top, len(self.tilemap)-1))
         bot = max(0,min(bot,len(self.tilemap)-1))
+        left = max(0,min(left,len(self.tilemap[0])-1))
+        right = max(0,min(right,len(self.tilemap[0])-1))
 
-        if DEBUG:
-            game.debug_txt('LEFT: '+str(left), (0,0),RED)
-            game.debug_txt('RIGHT: '+str(right), (0,10),RED)
-            game.debug_txt('TOP: '+str(top), (0,20),RED)
-            game.debug_txt('BOT: '+str(bot), (0,30),RED)
-                            
-        min_y = self.search_top(top, left, right)
-        max_y = self.search_bot(bot, left, right)
         min_x = self.search_left(left, top, bot)
         max_x = self.search_right(right, top, bot)
-
         min_x = min_x + WTILE + col.w/2
-        max_x = max_x - col.w/2 
+        max_x = max_x - col.w/2
+        
+        if self.player.x >= max_x:
+            self.player.x = max_x
+        if self.player.x <= min_x:
+            self.player.x = min_x
+
+        # Update Y
+        
+
+        min_y = self.search_top(top, left, right)
+        max_y = self.search_bot(bot, left, right)        
         min_y = min_y + HTILE + col.h
         max_y = max_y
 
@@ -50,15 +52,21 @@ class Gamelogic:
         if self.player.y <= min_y:
             self.player.y = min_y
             self.player.on_peak()
-            
-        if self.player.x >= max_x:
-            self.player.x = max_x
-        if self.player.x <= min_x:
-            self.player.x = min_x
+
+        if DEBUG:
+            game.debug_txt('LEFT: '+str(left), (0,0),RED)
+            game.debug_txt('RIGHT: '+str(right), (0,10),RED)
+            game.debug_txt('TOP: '+str(top), (0,20),RED)
+            game.debug_txt('BOT: '+str(bot), (0,30),RED)           
+        
 
         self.player.static_col = pygame.Rect(self.player.x, self.player.y, self.player.static_col.w, self.player.static_col.h)
         
+    #def search(self, start, a, b, dx, dy):
+    #   while True:
+            
         
+    
             
     #PEDING FIX THIS CODE
     def search_top(self, top, left, right):

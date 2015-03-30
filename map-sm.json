@@ -48,7 +48,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "image":"graphics\/blocks1.png",
+         "image":"graphics\/blocks11.png",
          "imageheight":400,
          "imagewidth":640,
          "margin":2,
@@ -64,7 +64,7 @@
         }, 
         {
          "firstgid":199,
-         "image":"graphics\/blocks2.png",
+         "image":"graphics\/blocks22.png",
          "imageheight":400,
          "imagewidth":640,
          "margin":2,
