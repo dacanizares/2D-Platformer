@@ -7,8 +7,8 @@ WTILE = 64
 HTILE = 64
 
 # Debug
-S_COLLIDER = True #Show static collider
-DEBUG = True
+S_COLLIDER = False #Show static collider
+DEBUG = False
 RED = (255,0,0)
 YELLOW = (255,255,0)
 MAX_VY = 50

@@ -2,8 +2,10 @@ import pygame
 from pygame import *
 
 def start(w,h):
+    print 'One second, we are setting all things in place.'
     pygame.init()
     pygame.display.set_mode((w, h))
+    print 'Lets go!'
 
 def load_image(path):
     return pygame.image.load(path).convert()
@@ -28,7 +30,7 @@ def clear():
     screen = pygame.display.get_surface()
     background = pygame.Surface(screen.get_size())
     background = background.convert()
-    background.fill((255, 255, 255))
+    background.fill((0, 0, 0))
     screen.blit(background, (0,0))
 
 def draw(image, xy):
