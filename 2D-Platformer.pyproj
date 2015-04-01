@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{c586416e-f0e8-48ec-8410-ab2bcb4f5c46}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>importmap.py</StartupFile>
+    <StartupFile>main.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -33,6 +33,7 @@
     <Compile Include="tilemap.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".gitignore" />
     <Content Include="graphics\arc1.png" />
     <Content Include="graphics\arc2.png" />
     <Content Include="graphics\arc22.png" />
@@ -40,7 +41,14 @@
     <Content Include="graphics\blocks11.png" />
     <Content Include="graphics\blocks2.png" />
     <Content Include="graphics\blocks22.png" />
+    <Content Include="graphics\license.rtf" />
+    <Content Include="LICENSE" />
+    <Content Include="map-sm.json" />
+    <Content Include="map.json" />
+    <Content Include="mapa-sm2.json" />
+    <Content Include="README.md" />
     <Content Include="sound\hyperfun.mp3" />
+    <Content Include="sound\LICENSE" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="graphics" />

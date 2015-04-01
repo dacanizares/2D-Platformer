@@ -18,7 +18,7 @@ def load_sprite(sheet, rectangle, colorkey = None):
         if colorkey is -1:
             colorkey = image.get_at((0,0))
         image.set_colorkey(colorkey, pygame.RLEACCEL)
-    return image#pygame.transform.scale2x(image)
+    return pygame.transform.scale2x(image)
       
 def load_sprites(sheet, rects, colorkey = None):
     return [load_sprite(sheet, rect,(0,0,0)) for rect in rects]

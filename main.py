@@ -29,7 +29,8 @@ clock = game.clock()
 
 pygame.mixer.init()
 pygame.mixer.music.load("sound/hyperfun.mp3")
-pygame.mixer.music.play()
+pygame.mixer.music.play(100)
+
 
 # Gameloop
 while True:

@@ -62,10 +62,10 @@ class Tilemap:
 
 t = Tilemap()
 t.load_tilesets('map-sm.json')
-map = t.load_map('map-sm.json')
+map = t.load_map('mapa-sm2.json')
 
 
-game.start(DISP_W, DISP_H)
+game.start(1990, 1000)
 clock = game.clock()
 
 pygame.mixer.init()
@@ -88,7 +88,7 @@ while True:
             tile = t.gindex[d]
             # Killing fps
             game.draw(game.load_sprite(game.load_image(tile.tileset.path),pygame.Rect(tile.x,tile.y,tile.tileset.tilew,tile.tileset.tileh),
-                                       (0,0,0)), (x*tile.tileset.tilew,y*tile.tileset.tileh))
+                                       (0,0,0)), (x*tile.tileset.tilew*2,y*tile.tileset.tileh*2))
         x+=1
         if x >= map[1]:
             x=0
