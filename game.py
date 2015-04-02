@@ -19,7 +19,7 @@ def load_sprite(sheet, rectangle, colorkey = None):
             colorkey = image.get_at((0,0))
         image.set_colorkey(colorkey, pygame.RLEACCEL)
     return pygame.transform.scale2x(image)
-      
+     
 def load_sprites(sheet, rects, colorkey = None):
     return [load_sprite(sheet, rect,(0,0,0)) for rect in rects]
 
@@ -35,6 +35,12 @@ def clear():
 
 def draw(image, xy):
     screen = pygame.display.get_surface()
+    screen.blit(image, xy)
+
+def draw_tile(sheet, xy, rect):
+    screen = pygame.display.get_surface()
+    image = pygame.Surface(rect.size).convert()
+    image.blit(sheet, (0, 0), rect)
     screen.blit(image, xy)
 
 def draw_rect(rect):

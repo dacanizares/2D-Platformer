@@ -31,6 +31,8 @@ pygame.mixer.init()
 pygame.mixer.music.load("sound/hyperfun.mp3")
 pygame.mixer.music.play(100)
 
+sheet = game.load_image('graphics/blocks1.png')
+
 
 # Gameloop
 while True:
@@ -44,6 +46,7 @@ while True:
     gamelogic.update(events)
     camera.update()
     camera.draw()
+    game.draw_tile(sheet,(10,10), pygame.Rect(50,50,50,50))
 
     clock.tick(30)
     game.debug_txt('FPS: '+str(clock.get_fps()), (750,580),RED) 
