@@ -5,6 +5,7 @@ from resources import *
 from player import *
 from tile import *
 from tilemap import *
+from tileset import *
 from camera import *
 from gamelogic import *
 
@@ -14,16 +15,12 @@ game.start(DISP_W, DISP_H)
 
 resources = Resources()
 
-player = Player(128, 64, pygame.Rect(128,64,30,70), resources.player)
-tiles = [[1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1],
-         [1,-1,-1, 1, 1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0, 0,-1],
-         [1,-1,-1,-1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1,-1, 0, 0,-1,-1],
-         [1,-1,-1,-1,-1,-1,-1, 1, 1, 1, 1, 1, 1, 1, 0,-1,-1,-1,-1,-1,-1],
-         [1, 0, 0,-1,-1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,-1,-1,-1,-1, 0],
-         [1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1],
-         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
-camera = Camera(0, 0, player, Tilemap(tiles, resources.tiles))
-gamelogic = Gamelogic(player, tiles)
+player = Player(0, 0, pygame.Rect(128,64,30,70), resources.player)
+tilemap = Tilemap()
+tilemap.load_tilesets('map-sm.json')
+tilemap.load_map('mapa-sm2.json')
+camera = Camera(0, 0, player, tilemap)
+gamelogic = Gamelogic(player, tilemap)
 
 clock = game.clock()
 
@@ -46,7 +43,6 @@ while True:
     gamelogic.update(events)
     camera.update()
     camera.draw()
-    game.draw_tile(sheet,(10,10), pygame.Rect(50,50,50,50))
 
     clock.tick(30)
     game.debug_txt('FPS: '+str(clock.get_fps()), (750,580),RED) 

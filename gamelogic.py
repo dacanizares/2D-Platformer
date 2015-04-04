@@ -6,8 +6,7 @@ from constants import *
 class Gamelogic:
     def __init__(self, player, tilemap):        
         self.player = player
-        self.tilemap = tilemap
-        
+        self.tilemap = tilemap.current_map        
         
     def update(self, eventos):
         self.player.update_events(eventos)
@@ -74,7 +73,7 @@ class Gamelogic:
             for j in range(left, right+1):
                 if top - i < 0:
                     continue
-                if self.tilemap[top-i][j] in IDS_COLISION_TOP:
+                if self.tilemap[top-i][j] not in IDS_COLISION_TOP:
                     if DEBUG:
                         game.debug_txt('COL->TOP: '+str(top-i),(400,0),RED)
                     return (top-i)*HTILE
@@ -85,7 +84,7 @@ class Gamelogic:
             for j in range(left, right+1):
                 if bot + i >= len(self.tilemap):
                     continue
-                if self.tilemap[bot+i][j] in IDS_COLISION_BOT:
+                if self.tilemap[bot+i][j] not in IDS_COLISION_BOT:
                     if DEBUG:
                         game.debug_txt('COL->BOT: '+str(bot+i),(400,10),RED)
                     return (bot+i)*HTILE
@@ -96,7 +95,7 @@ class Gamelogic:
             for j in range(top, bot+1):
                 if left - i < 0:
                     continue
-                if self.tilemap[j][left-i] in IDS_COLISION_LEFT:
+                if self.tilemap[j][left-i] not in IDS_COLISION_LEFT:
                     if DEBUG:
                         game.debug_txt('COL->LEFT: '+str(left-i),(400,20),RED)
                     return (left-i)*WTILE
@@ -107,7 +106,7 @@ class Gamelogic:
             for j in range(top, bot+1):
                 if right + i >= len(self.tilemap[0]):
                     continue
-                if self.tilemap[j][right+i] in IDS_COLISION_RIGHT:
+                if self.tilemap[j][right+i] not in IDS_COLISION_RIGHT:
                     if DEBUG:
                         game.debug_txt('COL->RIGHT: '+str(right+i),(400,30),RED)
                     return (right+i)*WTILE

@@ -4,23 +4,30 @@ from pygame.locals import *
 from constants import *
 
 class Camera:
-    def __init__(self, x, y, player, tilemap):        
+    def __init__(self, x, y, focus, tilemap):        
         self.x = x
         self.y = y
-        self.player = player
+        self.focus = focus
         self.tilemap = tilemap
 
     def update(self):
-        self.x = self.player.x - DISP_W / 2
-        self.y = self.player.y - DISP_H * 3 / 4        
+        self.x = self.focus.x - DISP_W / 2
+        self.y = self.focus.y - DISP_H * 3 / 4        
 
     def draw(self):
-        self.tilemap.draw(self.x, self.y, DISP_W, DISP_H)
-        self.player.draw(self.player.x - self.x, self.player.y - self.y)        
-
-        if S_COLLIDER:
-            col = self.player.static_col
-            rect = pygame.Rect(0,0,3,3)            
+        x = 0
+        y = 0
+        for row in self.tilemap.current_map:
+            for tile_id in row:
+                if tile_id != 0:
+                    tile = self.tilemap.gindex[tile_id]
+                    tile.draw(x * tile.tileset.tilew - self.x,
+                              y * tile.tileset.tileh - self.y)            
+                x += 1
+                if x >= self.tilemap.current_width:
+                    x = 0
+                    y += 1
+        self.focus.draw(self.focus.x - self.x, self.focus.y - self.y)       
     
 
     
