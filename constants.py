@@ -2,10 +2,6 @@
 DISP_W = 800
 DISP_H = 600
 
-# Map
-WTILE = 32
-HTILE = 32
-
 # Debug
 S_COLLIDER = False #Show static collider
 DEBUG = False

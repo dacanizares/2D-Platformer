@@ -12,11 +12,15 @@ class Tilemap:
         self.tilesets = []
         self.current_map = None
         self.current_width = 0
-        self.current_height = 0      
+        self.current_height = 0
+        self.tilew = 0
+        self.tileh = 0
 
     def load_tilesets(self, path):
         json_data = open(path)
-        data = json.load(json_data)        
+        data = json.load(json_data)    
+        self.tilew = data['tilewidth']    
+        self.tileh = data['tileheight']
 
         for t in data['tilesets']:
             tileset = Tileset(t['image'], t['imagewidth'], t['imageheight'],
@@ -46,7 +50,7 @@ class Tilemap:
         self.current_width = data['width']
         
         self.current_map = []
-        map_data = data['layers'][0]['data']
+        map_data = data['layers'][0]['data']#CHANGE THIS!
         for i in range(self.current_height):
             row = []
             for j in range(self.current_width):
