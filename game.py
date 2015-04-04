@@ -7,18 +7,23 @@ def start(w,h):
     pygame.display.set_mode((w, h))
     print 'Lets go!'
 
-def load_image(path):
-    return pygame.image.load(path).convert()
+def apply_alpha(image, colorkey):
+    if colorkey is not None:
+        if colorkey is -1:
+            colorkey = image.get_at((0,0))
+        image.set_colorkey(colorkey, pygame.RLEACCEL)
+
+def load_image(path, colorkey = None):
+    image = pygame.image.load(path).convert()
+    apply_alpha(image, colorkey)
+    return image
 
 def load_sprite(sheet, rectangle, colorkey = None):    
     rect = pygame.Rect(rectangle)
     image = pygame.Surface(rect.size).convert()
     image.blit(sheet, (0, 0), rect)
-    if colorkey is not None:
-        if colorkey is -1:
-            colorkey = image.get_at((0,0))
-        image.set_colorkey(colorkey, pygame.RLEACCEL)
-    return pygame.transform.scale2x(image)
+    apply_alpha(image, colorkey)
+    return image#pygame.transform.scale2x(image)
      
 def load_sprites(sheet, rects, colorkey = None):
     return [load_sprite(sheet, rect,(0,0,0)) for rect in rects]
@@ -37,10 +42,11 @@ def draw(image, xy):
     screen = pygame.display.get_surface()
     screen.blit(image, xy)
 
-def draw_tile(sheet, xy, rect):
+def draw_tile(sheet, xy, rect, colorkey=None):
     screen = pygame.display.get_surface()
     image = pygame.Surface(rect.size).convert()
     image.blit(sheet, (0, 0), rect)
+    apply_alpha(image, colorkey)
     screen.blit(image, xy)
 
 def draw_rect(rect):
@@ -55,6 +61,8 @@ def debug_txt(txt,xy,color):
 
 
 def update():
+    screen = pygame.display.get_surface()
+    #screen.blit(pygame.transform.scale2x(screen), (0,0))
     pygame.display.flip()
 
 def get_events():
@@ -78,6 +86,9 @@ def clock():
 
 def new_rect(x,y,size):
     return pygame.Rect(x, y, size[0], size[1])
+
+def to_rgb(color):
+    return (0,0,0)
 
 
         
