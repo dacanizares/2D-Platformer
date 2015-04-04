@@ -4,7 +4,7 @@ from pygame.locals import *
 from constants import *
 
 class Player:
-    def __init__(self, x, y, static_col, resources):        
+    def __init__(self, x, y, collider, resources):        
         self.x = x
         self.y = y
         self.vy = 0
@@ -16,10 +16,10 @@ class Player:
         self.jump  = False
         self.delta_frames = 0
 
-        # Colisiones estaticas
+        # Static collisions
         self.last_x = x
         self.last_y = y
-        self.static_col = static_col
+        self.collider = collider
         
         self.walking = resources[0]
         self.idle = resources[1]
@@ -51,7 +51,7 @@ class Player:
                            
         # Y movement
         if self.land and self.jump:
-            self.vy = -VEL_y
+            self.vy = -VEL_Y
             self.land = False
             
         self.y += self.vy

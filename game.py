@@ -62,7 +62,7 @@ def debug_txt(txt,xy,color):
 
 def update():
     screen = pygame.display.get_surface()
-    #screen.blit(pygame.transform.scale2x(screen), (0,0))
+    screen.blit(pygame.transform.scale2x(screen), (0,0))
     pygame.display.flip()
 
 def get_events():

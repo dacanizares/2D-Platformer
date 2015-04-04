@@ -11,14 +11,14 @@ from gamelogic import *
 
 
 # Game starts!
-game.start(DISP_W, DISP_H)
+game.start(DISP_W*2, DISP_H*2)
 
 resources = Resources()
 
 player = Player(0, 0, pygame.Rect(128,64,30,70), resources.player)
 tilemap = Tilemap()
-tilemap.load_tilesets('map-sm.json')
-tilemap.load_map('mapa-sm2.json')
+tilemap.load_tilesets('map1.json')
+tilemap.load_map('map1.json')
 camera = Camera(0, 0, player, tilemap)
 gamelogic = Gamelogic(player, tilemap)
 

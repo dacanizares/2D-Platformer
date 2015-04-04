@@ -15,6 +15,7 @@ class Tilemap:
         self.current_height = 0
         self.tilew = 0
         self.tileh = 0
+        self.no_collision = {0: True}
 
     def load_tilesets(self, path):
         json_data = open(path)
@@ -29,8 +30,14 @@ class Tilemap:
                               t['firstgid'], t['transparentcolor'])
             self.tilesets.append(tileset)
 
+            if 'tileproperties' in t:
+                for tile_id in t['tileproperties']:
+                    if 'NoCollide' in t['tileproperties'][tile_id] and t['tileproperties'][tile_id]['NoCollide'] == '1':
+                        self.no_collision[int(tile_id) + tileset.firstgid] = True
+
         self.index_gid()
         json_data.close()
+        print self.no_collision
          
     def index_gid(self):
         for tileset in self.tilesets:

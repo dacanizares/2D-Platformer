@@ -12,7 +12,7 @@ class Gamelogic:
         self.player.update_events(eventos)
         self.player.update()
         
-        col = self.player.static_col
+        col = self.player.collider
 
         # Update X
         left = (col.x - col.w / 2 + 1) / self.tilemap.tilew
@@ -57,7 +57,7 @@ class Gamelogic:
             game.debug_txt('BOT: '+str(bot), (0,30),RED)           
         
 
-        self.player.static_col = pygame.Rect(self.player.x, self.player.y, self.player.static_col.w, self.player.static_col.h)
+        self.player.collider = pygame.Rect(self.player.x, self.player.y, self.player.collider.w, self.player.collider.h)
         
     #def search(self, start, a, b, dx, dy):
     #   while True:
@@ -71,7 +71,7 @@ class Gamelogic:
             for j in range(left, right+1):
                 if top - i < 0:
                     continue
-                if self.tilemap.current_map[top-i][j] not in IDS_COLISION_TOP:
+                if self.tilemap.current_map[top-i][j] not in self.tilemap.no_collision:
                     if DEBUG:
                         game.debug_txt('COL->TOP: '+str(top-i),(400,0),RED)
                     return (top-i)*self.tilemap.tileh
@@ -82,9 +82,9 @@ class Gamelogic:
             for j in range(left, right+1):
                 if bot + i >= len(self.tilemap.current_map):
                     continue
-                if self.tilemap.current_map[bot+i][j] not in IDS_COLISION_BOT:
+                if self.tilemap.current_map[bot+i][j] not in self.tilemap.no_collision:
                     if DEBUG:
-                        game.debug_txt('COL->BOT: '+str(bot+i),(400,10),RED)
+                        game.debug_txt('COL->BOT: '+str(self.tilemap.current_map[bot+i][j]),(400,10),RED)
                     return (bot+i)*self.tilemap.tileh
         return MAX_Y
 
@@ -93,7 +93,7 @@ class Gamelogic:
             for j in range(top, bot+1):
                 if left - i < 0:
                     continue
-                if self.tilemap.current_map[j][left-i] not in IDS_COLISION_LEFT:
+                if self.tilemap.current_map[j][left-i] not in self.tilemap.no_collision:
                     if DEBUG:
                         game.debug_txt('COL->LEFT: '+str(left-i),(400,20),RED)
                     return (left-i)*self.tilemap.tilew
@@ -104,7 +104,7 @@ class Gamelogic:
             for j in range(top, bot+1):
                 if right + i >= len(self.tilemap.current_map[0]):
                     continue
-                if self.tilemap.current_map[j][right+i] not in IDS_COLISION_RIGHT:
+                if self.tilemap.current_map[j][right+i] not in self.tilemap.no_collision:
                     if DEBUG:
                         game.debug_txt('COL->RIGHT: '+str(right+i),(400,30),RED)
                     return (right+i)*self.tilemap.tilew

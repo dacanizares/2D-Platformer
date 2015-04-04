@@ -15,18 +15,28 @@ class Camera:
         self.y = self.focus.y - DISP_H * 3 / 4        
 
     def draw(self):
-        x = 0
-        y = 0
-        for row in self.tilemap.current_map:
-            for tile_id in row:
+        starting_x = (self.x - 1) / self.tilemap.tilew
+        starting_y = (self.y - 1) / self.tilemap.tileh
+
+        ending_x = (self.x + DISP_W + 1) / self.tilemap.tilew
+        ending_y = (self.y + DISP_H + 1) / self.tilemap.tileh
+
+        for i in range(starting_y, ending_y+1):
+            if i < 0 or i >= self.tilemap.current_height:
+                continue
+            for j in range(starting_x, ending_x+1):
+                if j < 0 or j >= self.tilemap.current_width:
+                    continue
+
+                tile_id = self.tilemap.current_map[i][j]
                 if tile_id != 0:
                     tile = self.tilemap.gindex[tile_id]
-                    tile.draw(x * tile.tileset.tilew - self.x,
-                              y * tile.tileset.tileh - self.y)            
-                x += 1
-                if x >= self.tilemap.current_width:
-                    x = 0
-                    y += 1
+                    tile.draw(j * tile.tileset.tilew - self.x,
+                              i * tile.tileset.tileh - self.y)
+                    #game.debug_txt(str(tile_id), 
+                    #               (j * tile.tileset.tilew - self.x,
+                    #                i * tile.tileset.tileh - self.y), RED)           
+                
         self.focus.draw(self.focus.x - self.x, self.focus.y - self.y)       
     
 
