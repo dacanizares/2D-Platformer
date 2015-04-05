@@ -33,9 +33,10 @@ class Camera:
                     tile = self.tilemap.gindex[tile_id]
                     tile.draw(j * tile.tileset.tilew - self.x,
                               i * tile.tileset.tileh - self.y)
-                    game.debug_txt(str(i)+','+str(j), 
-                                   (j * tile.tileset.tilew - self.x,
-                                    i * tile.tileset.tileh - self.y), RED)           
+                    if DEBUG:
+                        game.debug_txt(str(i)+','+str(j), 
+                                       (j * tile.tileset.tilew - self.x,
+                                        i * tile.tileset.tileh - self.y), RED)           
                 
         self.focus.draw(self.focus.x - self.x, self.focus.y - self.y)
     

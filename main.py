@@ -44,8 +44,8 @@ while True:
     camera.update()
     camera.draw()
 
-    clock.tick(20)
-    game.debug_txt('FPS: '+str(clock.get_fps()), (750,580),RED) 
+    clock.tick(30)
+    game.debug_txt('FPS: '+str(clock.get_fps())[:4], (540,380),RED) 
     
     game.update()
     

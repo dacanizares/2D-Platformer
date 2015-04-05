@@ -5,8 +5,7 @@ XCAM_OFFSET = 50
 YCAM_OFFSET = 50
 
 # Debug
-S_COLLIDER = False #Show static collider
-DEBUG = True
+DEBUG = False
 RED = (255,0,0)
 YELLOW = (255,255,0)
 MAX_VY = 15

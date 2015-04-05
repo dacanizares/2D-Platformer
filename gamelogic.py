@@ -125,7 +125,6 @@ class Gamelogic:
             for i in range(a, b + 1):
                 # x changing
                 if dx != 0 and self.tilemap.current_map[i][start] not in self.tilemap.no_collision:                    
-                    game.debug_txt('COL: '+str(start), (0,40), RED)     
                     return start
                 # y changing
                 elif dy != 0 and self.tilemap.current_map[start][i] not in self.tilemap.no_collision:
