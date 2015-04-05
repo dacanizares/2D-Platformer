@@ -46,9 +46,8 @@
     <Content Include="graphics\blocks22.png" />
     <Content Include="graphics\license.rtf" />
     <Content Include="LICENSE" />
-    <Content Include="map-sm.json" />
-    <Content Include="map.json" />
-    <Content Include="mapa-sm2.json" />
+    <Content Include="map1.json" />
+    <Content Include="map1.tmx" />
     <Content Include="README.md" />
     <Content Include="sound\hyperfun.mp3" />
     <Content Include="sound\LICENSE" />
