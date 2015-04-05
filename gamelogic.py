@@ -7,60 +7,65 @@ class Gamelogic:
     def __init__(self, player, tilemap):        
         self.player = player
         self.tilemap = tilemap
+
+    def get_limits(self, col):
+        left = (col.x - col.w / 2 + 1) / self.tilemap.tilew
+        right = (col.x + col.w / 2 - 1) / self.tilemap.tilew
+        top = (col.y - col.h + 1) / self.tilemap.tileh
+        bot = (col.y - 1) / self.tilemap.tileh
+
+        return left, right, top, bot
         
     def update(self, eventos):
         self.player.update_events(eventos)
         self.player.update()
         
+        # Collider to compare with
         col = self.player.collider
 
-        # Check X
-        left = (col.x - col.w / 2 + 1) / self.tilemap.tilew
-        right = (col.x + col.w / 2 - 1) / self.tilemap.tilew
-        top = (col.y - col.h + 1) / self.tilemap.tileh
-        bot = (col.y - 1) / self.tilemap.tileh
-        
+        # UPDATE X --------------------------------------
+        left, right, top, bot = self.get_limits(col)
+
+        # Search for limits
         min_x = self.search(left, top, bot, -1 , 0)
         max_x = self.search(right, top, bot,  1 , 0) 
-        if min_x != None:
-            limit = min_x * self.tilemap.tilew + self.tilemap.tilew + col.w / 2
-            if self.player.x <= limit:
-                self.player.x = limit
-        if max_x != None:
-            limit = max_x * self.tilemap.tilew - col.w / 2        
-            if self.player.x >= limit:
-                self.player.x = limit
-       
 
-        # Update collider
+        # Limit X
+        limit = min_x * self.tilemap.tilew + self.tilemap.tilew + col.w / 2
+        if self.player.x <= limit:
+            self.player.x = limit
+        limit = max_x * self.tilemap.tilew - col.w / 2        
+        if self.player.x >= limit:
+            self.player.x = limit      
+
+        # Update collider (just X axis)
         col.x = self.player.x
 
-        # Check Y
-        left = (col.x - col.w / 2 + 1) / self.tilemap.tilew
-        right = (col.x + col.w / 2 - 1) / self.tilemap.tilew
-        top = (col.y - col.h + 1) / self.tilemap.tileh
-        bot = (col.y - 1) / self.tilemap.tileh
 
+
+        # UPDATE Y ------------------------------------
+        left, right, top, bot = self.get_limits(col)
+
+        # Search for limits
         min_y = self.search(top, left, right, 0, -1)
         max_y = self.search(bot, left, right, 0, 1)
 
-        if min_y != None:
-            limit = min_y * self.tilemap.tileh + self.tilemap.tileh + col.h
-            if self.player.y <= limit:
-                self.player.y = limit
-                self.player.on_peak()
-        if max_y != None:
-            limit = max_y * self.tilemap.tileh
+        # Limit Y
+        limit = min_y * self.tilemap.tileh + self.tilemap.tileh + col.h
+        if self.player.y <= limit:
+            self.player.y = limit
+            self.player.on_peak()
+        limit = max_y * self.tilemap.tileh
 
-            if self.player.y >= limit:
-                self.player.y = limit
-                self.player.on_land()
-            else:
-                self.player.on_air()
-            
-       
+        if self.player.y >= limit:
+            self.player.y = limit
+            self.player.on_land()
+        else:
+            self.player.on_air()
 
+        # Update Collider
         self.player.collider = pygame.Rect(self.player.x, self.player.y, self.player.collider.w, self.player.collider.h)
+
 
         if DEBUG:
             game.debug_txt('LEFT: '+str(min_x), (0,0), RED)
@@ -108,12 +113,8 @@ class Gamelogic:
         limit = -1
         if dx > 0:
             limit = self.tilemap.current_width
-            if b >= self.tilemap.current_height:
-                return None
         elif dy > 0:
             limit = self.tilemap.current_height
-            if b >= self.tilemap.current_width:
-                return None
                 
         # Search for static objects!
         while True:
