@@ -14,102 +14,124 @@ class Gamelogic:
         
         col = self.player.collider
 
-        # Update X
+        # Check X
         left = (col.x - col.w / 2 + 1) / self.tilemap.tilew
         right = (col.x + col.w / 2 - 1) / self.tilemap.tilew
         top = (col.y - col.h + 1) / self.tilemap.tileh
         bot = (col.y - 1) / self.tilemap.tileh
-        top = max(0,min(top, len(self.tilemap.current_map)-1))
-        bot = max(0,min(bot,len(self.tilemap.current_map)-1))
-        left = max(0,min(left,len(self.tilemap.current_map[0])-1))
-        right = max(0,min(right,len(self.tilemap.current_map[0])-1))
-
-        min_x = self.search_left(left, top, bot)
-        max_x = self.search_right(right, top, bot)
-        min_x = min_x + self.tilemap.tilew + col.w/2
-        max_x = max_x - col.w / 2
         
-        if self.player.x >= max_x:
-            self.player.x = max_x
-        if self.player.x <= min_x:
-            self.player.x = min_x
+        min_x = self.search(left, top, bot, -1 , 0)
+        max_x = self.search(right, top, bot,  1 , 0) 
+        if min_x != None:
+            limit = min_x * self.tilemap.tilew + self.tilemap.tilew + col.w / 2
+            if self.player.x <= limit:
+                self.player.x = limit
+        if max_x != None:
+            limit = max_x * self.tilemap.tilew - col.w / 2        
+            if self.player.x >= limit:
+                self.player.x = limit
+       
 
-        # Update Y
-        min_y = self.search_top(top, left, right)
-        max_y = self.search_bot(bot, left, right)        
-        min_y = min_y + self.tilemap.tileh + col.h
-        max_y = max_y
+        # Update collider
+        col.x = self.player.x
 
-        if self.player.y >= max_y:
-            self.player.y = max_y
-            self.player.on_land()
-        else:
-            self.player.on_air()
+        # Check Y
+        left = (col.x - col.w / 2 + 1) / self.tilemap.tilew
+        right = (col.x + col.w / 2 - 1) / self.tilemap.tilew
+        top = (col.y - col.h + 1) / self.tilemap.tileh
+        bot = (col.y - 1) / self.tilemap.tileh
+
+        min_y = self.search(top, left, right, 0, -1)
+        max_y = self.search(bot, left, right, 0, 1)
+
+        if min_y != None:
+            limit = min_y * self.tilemap.tileh + self.tilemap.tileh + col.h
+            if self.player.y <= limit:
+                self.player.y = limit
+                self.player.on_peak()
+        if max_y != None:
+            limit = max_y * self.tilemap.tileh
+
+            if self.player.y >= limit:
+                self.player.y = limit
+                self.player.on_land()
+            else:
+                self.player.on_air()
             
-        if self.player.y <= min_y:
-            self.player.y = min_y
-            self.player.on_peak()
-
-        if DEBUG:
-            game.debug_txt('LEFT: '+str(left), (0,0),RED)
-            game.debug_txt('RIGHT: '+str(right), (0,10),RED)
-            game.debug_txt('TOP: '+str(top), (0,20),RED)
-            game.debug_txt('BOT: '+str(bot), (0,30),RED)           
-        
+       
 
         self.player.collider = pygame.Rect(self.player.x, self.player.y, self.player.collider.w, self.player.collider.h)
-        
-    #def search(self, start, a, b, dx, dy):
-    #   while True:
+
+        if DEBUG:
+            game.debug_txt('LEFT: '+str(min_x), (0,0), RED)
+            game.debug_txt('RIGHT: '+str(max_x), (0,10), RED)
+            game.debug_txt('TOP: '+str(min_y), (0,20), RED)
+            game.debug_txt('BOT: '+str(max_y), (0,30), RED)   
             
-        
+            game.debug_txt('LEFT: '+str(left), (100,0), RED)
+            game.debug_txt('RIGHT: '+str(right), (100,10), RED)
+            game.debug_txt('TOP: '+str(top), (100,20), RED)
+            game.debug_txt('BOT: '+str(bot), (100,30), RED)                      
     
-            
-    #PEDING FIX THIS CODE
-    def search_top(self, top, left, right):
-        for i in range(0, MAX_DIST_COL):
-            for j in range(left, right+1):
-                if top - i < 0:
-                    continue
-                if self.tilemap.current_map[top-i][j] not in self.tilemap.no_collision:
-                    if DEBUG:
-                        game.debug_txt('COL->TOP: '+str(top-i),(400,0),RED)
-                    return (top-i)*self.tilemap.tileh
-        return MIN_Y
 
-    def search_bot(self, bot, left, right):
-        for i in range(0, MAX_DIST_COL):
-            for j in range(left, right+1):
-                if bot + i >= len(self.tilemap.current_map):
-                    continue
-                if self.tilemap.current_map[bot+i][j] not in self.tilemap.no_collision:
-                    if DEBUG:
-                        game.debug_txt('COL->BOT: '+str(self.tilemap.current_map[bot+i][j]),(400,10),RED)
-                    return (bot+i)*self.tilemap.tileh
-        return MAX_Y
+    # Search for static objects to collide with
+    # start: starting point
+    # a: lower bound
+    # b: upper bound (a < b)
+    # dx, dy: moving direction
+    #
+    # Returns: None if no colliders found. Otherwise a value with the ROW or COLUMN of the collider.
+    #
+    # Example: 
+    #  to trace from x = 1, to the left, from tiles y = 2 to y = 3
+    #  search(1, 2, 5, 1, 0)
+    #
+    # Result:
+    #    0 1 2 3 4 5 ... MAX_DIST_COL
+    #  0 . . . . . .
+    #  1 . . . . . .
+    #  2 . X X X X X 
+    #  3 . X X X X X 
+    #  4 . . . . . . 
+    #
+    #  It will search on the position marked with X
 
-    def search_left(self, left, top, bot):
-        for i in range(0, MAX_DIST_COL):
-            for j in range(top, bot+1):
-                if left - i < 0:
-                    continue
-                if self.tilemap.current_map[j][left-i] not in self.tilemap.no_collision:
-                    if DEBUG:
-                        game.debug_txt('COL->LEFT: '+str(left-i),(400,20),RED)
-                    return (left-i)*self.tilemap.tilew
-        return MIN_X
+    def search(self, start, a, b, dx, dy):        
+        # Validate that we arent searching on diagonals
+        if dx != 0 and dy != 0:
+            raise Exception('collision search', 'unable to lock on diagonals.')
 
-    def search_right(self, right, top, bot):
-        for i in range(0, MAX_DIST_COL):
-            for j in range(top, bot+1):
-                if right + i >= len(self.tilemap.current_map[0]):
-                    continue
-                if self.tilemap.current_map[j][right+i] not in self.tilemap.no_collision:
-                    if DEBUG:
-                        game.debug_txt('COL->RIGHT: '+str(right+i),(400,30),RED)
-                    return (right+i)*self.tilemap.tilew
-        return MAX_X
+        if a < 0:
+            return -1
 
+        # Set limits, by default 0, width or height according to dx and dy
+        limit = -1
+        if dx > 0:
+            limit = self.tilemap.current_width
+            if b >= self.tilemap.current_height:
+                return None
+        elif dy > 0:
+            limit = self.tilemap.current_height
+            if b >= self.tilemap.current_width:
+                return None
+                
+        # Search for static objects!
+        while True:
+            # If we reached the limit
+            if start == limit:
+                return start
+
+            # Scan!
+            for i in range(a, b + 1):
+                # x changing
+                if dx != 0 and self.tilemap.current_map[i][start] not in self.tilemap.no_collision:                    
+                    game.debug_txt('COL: '+str(start), (0,40), RED)     
+                    return start
+                # y changing
+                elif dy != 0 and self.tilemap.current_map[start][i] not in self.tilemap.no_collision:
+                    return start
+            # Advance!
+            start += (dx + dy)
            
         
         

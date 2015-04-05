@@ -15,6 +15,7 @@ class Player:
         self.left = False
         self.jump  = False
         self.delta_frames = 0
+        self.stop = False
 
         # Static collisions
         self.last_x = x
@@ -42,7 +43,13 @@ class Player:
             self.jump = events[K_UP]
             self.frame = 0
 
-    def update(self):        
+        if K_SPACE in events:
+            self.stop = events[K_SPACE]
+
+    def update(self): 
+        if self.stop:
+            return
+               
         # X movement
         if self.right:
             self.x += VEL_X            
@@ -57,8 +64,8 @@ class Player:
         self.y += self.vy
             
         if DEBUG:
-            game.debug_txt('XY: '+str(self.x)+','+str(self.y), (100,0), RED)
-            game.debug_txt('VY: '+str(self.vy), (100,30), RED)
+            game.debug_txt('XY: '+str(self.x)+','+str(self.y), (200,0), RED)
+            game.debug_txt('VY: '+str(self.vy), (200,30), RED)
 
     def on_land(self):
         self.land = True
@@ -99,8 +106,8 @@ class Player:
         xoffset = -sprite.get_width()/2
         yoffset = -sprite.get_height()
         game.draw(sprite, (xcam + xoffset, ycam + yoffset))
-        if S_COLLIDER:
-            game.draw_rect(pygame.Rect(xcam - self.static_col.w/2, ycam - self.static_col.h, self.static_col.w, self.static_col.h))
+        if DEBUG:
+            game.draw_rect(pygame.Rect(xcam - self.collider.w/2, ycam - self.collider.h, self.collider.w, self.collider.h))
     
     
 

@@ -15,7 +15,7 @@ game.start(DISP_W*2, DISP_H*2)
 
 resources = Resources()
 
-player = Player(0, 0, pygame.Rect(128,64,30,70), resources.player)
+player = Player(40, 40, pygame.Rect(128,64,15,35), resources.player)
 tilemap = Tilemap()
 tilemap.load_tilesets('map1.json')
 tilemap.load_map('map1.json')
@@ -44,7 +44,7 @@ while True:
     camera.update()
     camera.draw()
 
-    clock.tick(30)
+    clock.tick(20)
     game.debug_txt('FPS: '+str(clock.get_fps()), (750,580),RED) 
     
     game.update()
