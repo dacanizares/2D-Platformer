@@ -4,15 +4,32 @@ from pygame.locals import *
 from constants import *
 
 class Camera:
-    def __init__(self, x, y, focus, tilemap):        
+    def __init__(self, x, y, focus, tilemap, mode=False, offset=0.25):        
         self.x = x
         self.y = y
         self.focus = focus
         self.tilemap = tilemap
+        self.offset = offset
+        self.mode = mode
+        self.x = self.focus.x - DISP_W / 2
 
     def update(self):
-        self.x = self.focus.x - DISP_W / 2
-        self.y = self.focus.y - DISP_H * 3 / 4        
+        if not self.mode:
+            self.x = self.focus.x - DISP_W / 2
+            self.y = self.focus.y - DISP_H * 3 / 4
+        else:
+            limit_x = int(self.offset * DISP_W)
+
+            if self.focus.x < self.x + limit_x:                
+                self.x -= (self.x + limit_x) - self.focus.x 
+            elif self.focus.x > (self.x + DISP_W) - limit_x:
+                self.x += self.focus.x - ((self.x + DISP_W) - limit_x)
+
+            limit_y = int(self.offset * DISP_H)
+            if self.focus.y < self.y + limit_y:                
+                self.y -= (self.y + limit_y) - self.focus.y 
+            elif self.focus.y > (self.y + DISP_H) - limit_y:
+                self.y += self.focus.y - ((self.y + DISP_H) - limit_y)
 
     def draw(self):
         starting_x = (self.x - 1) / self.tilemap.tilew

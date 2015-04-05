@@ -8,6 +8,12 @@ class Gamelogic:
         self.player = player
         self.tilemap = tilemap
 
+    # Get collider limits.
+    # col: pygame.Rect
+    #
+    # Returns left, right, top and bot rows or cols limiting with.
+    # The collider center point is at middle bottom.
+
     def get_limits(self, col):
         left = (col.x - col.w / 2 + 1) / self.tilemap.tilew
         right = (col.x + col.w / 2 - 1) / self.tilemap.tilew
@@ -16,8 +22,12 @@ class Gamelogic:
 
         return left, right, top, bot
         
-    def update(self, eventos):
-        self.player.update_events(eventos)
+
+    # Updates entities and colliding events
+    # events: pygame events to send to entities
+
+    def update(self, events):
+        self.player.update_events(events)
         self.player.update()
         
         # Collider to compare with

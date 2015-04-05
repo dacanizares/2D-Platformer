@@ -19,7 +19,7 @@ player = Player(40, 40, pygame.Rect(128,64,15,35), resources.player)
 tilemap = Tilemap()
 tilemap.load_tilesets('map1.json')
 tilemap.load_map('map1.json')
-camera = Camera(0, 0, player, tilemap)
+camera = Camera(0, 0, player, tilemap, True, 0.25)
 gamelogic = Gamelogic(player, tilemap)
 
 clock = game.clock()
