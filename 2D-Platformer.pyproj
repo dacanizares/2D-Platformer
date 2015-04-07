@@ -21,8 +21,17 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="actor.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="character.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="camera.py" />
     <Compile Include="constants.py" />
+    <Compile Include="controlled_character.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="game.py" />
     <Compile Include="gamelogic.py" />
     <Compile Include="importmap.py" />

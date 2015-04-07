@@ -30,8 +30,8 @@ class Resources:
         saltando_der = game.load_sprites(sheet, rects, (0,0,0))
         saltando_izq = game.flip_sprites(saltando_der)
         self.player = [
-            [caminando_der,caminando_izq],
             [quieto_der, quieto_izq],
+            [caminando_der,caminando_izq],            
             [saltando_der, saltando_izq]]
 
         

@@ -8,6 +8,7 @@ from tilemap import *
 from tileset import *
 from camera import *
 from gamelogic import *
+from controlled_character import *
 
 
 # Game starts!
@@ -15,23 +16,25 @@ game.start(DISP_W*2, DISP_H*2)
 
 resources = Resources()
 
-player = Player(40, 40, pygame.Rect(128,64,15,35), resources.player)
+player = Player(40, 40, pygame.Rect(0,0,15,35), resources.player)
+ai = ControlledCharacter(100, 40, pygame.Rect(0,0,15,35), resources.player)
 tilemap = Tilemap()
 tilemap.load_tilesets('map1.json')
 tilemap.load_map('map1.json')
-camera = Camera(0, 0, player, tilemap, True, 0.25)
-gamelogic = Gamelogic(player, tilemap)
+camera = Camera(0, 0, player, [player,ai], tilemap, True, 0.25)
+gamelogic = Gamelogic([player,ai], tilemap)
 
 clock = game.clock()
 
-pygame.mixer.init()
-pygame.mixer.music.load("sound/hyperfun.mp3")
-pygame.mixer.music.play(100)
+#pygame.mixer.init()
+#pygame.mixer.music.load("sound/hyperfun.mp3")
+#pygame.mixer.music.play(100)
 
 sheet = game.load_image('graphics/blocks1.png')
 
 
 # Gameloop
+gamelogic.start()
 while True:
     events = game.get_events()
     if 'QUIT' in events:

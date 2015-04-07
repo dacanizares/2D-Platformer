@@ -4,9 +4,13 @@ from pygame.locals import *
 from constants import *
 
 class Gamelogic:
-    def __init__(self, player, tilemap):        
-        self.player = player
+    def __init__(self, actors, tilemap):        
+        self.actors = actors
         self.tilemap = tilemap
+
+    def start(self):
+        for actor in self.actors:
+            actor.on_start()
 
     # Get collider limits.
     # col: pygame.Rect
@@ -27,66 +31,68 @@ class Gamelogic:
     # events: pygame events to send to entities
 
     def update(self, events):
-        self.player.update_events(events)
-        self.player.update()
+        for actor in self.actors:
+            actor.update_events(events)
+            actor.update()
         
-        # Collider to compare with
-        col = self.player.collider
+            # Collider to compare with
+            col = actor.collider
 
-        # UPDATE X --------------------------------------
-        left, right, top, bot = self.get_limits(col)
+            # UPDATE X --------------------------------------
+            left, right, top, bot = self.get_limits(col)
 
-        # Search for limits
-        min_x = self.search(left, top, bot, -1 , 0)
-        max_x = self.search(right, top, bot,  1 , 0) 
+            # Search for limits
+            min_x = self.search(left, top, bot, -1 , 0)
+            max_x = self.search(right, top, bot,  1 , 0) 
 
-        # Limit X
-        limit = min_x * self.tilemap.tilew + self.tilemap.tilew + col.w / 2
-        if self.player.x <= limit:
-            self.player.x = limit
-        limit = max_x * self.tilemap.tilew - col.w / 2        
-        if self.player.x >= limit:
-            self.player.x = limit      
-
-        # Update collider (just X axis)
-        col.x = self.player.x
-
-
-
-        # UPDATE Y ------------------------------------
-        left, right, top, bot = self.get_limits(col)
-
-        # Search for limits
-        min_y = self.search(top, left, right, 0, -1)
-        max_y = self.search(bot, left, right, 0, 1)
-
-        # Limit Y
-        limit = min_y * self.tilemap.tileh + self.tilemap.tileh + col.h
-        if self.player.y <= limit:
-            self.player.y = limit
-            self.player.on_peak()
-        limit = max_y * self.tilemap.tileh
-
-        if self.player.y >= limit:
-            self.player.y = limit
-            self.player.on_land()
-        else:
-            self.player.on_air()
-
-        # Update Collider
-        self.player.collider = pygame.Rect(self.player.x, self.player.y, self.player.collider.w, self.player.collider.h)
+            # Limit X
+            limit = min_x * self.tilemap.tilew + self.tilemap.tilew + col.w / 2
+            if actor.x <= limit:
+                actor.x = limit
+                actor.on_left()
+            limit = max_x * self.tilemap.tilew - col.w / 2        
+            if actor.x >= limit:
+                actor.x = limit      
+                actor.on_right()
+            # Update collider (just X axis)
+            col.x = actor.x
 
 
-        if DEBUG:
-            game.debug_txt('LEFT: '+str(min_x), (0,0), RED)
-            game.debug_txt('RIGHT: '+str(max_x), (0,10), RED)
-            game.debug_txt('TOP: '+str(min_y), (0,20), RED)
-            game.debug_txt('BOT: '+str(max_y), (0,30), RED)   
-            
-            game.debug_txt('LEFT: '+str(left), (100,0), RED)
-            game.debug_txt('RIGHT: '+str(right), (100,10), RED)
-            game.debug_txt('TOP: '+str(top), (100,20), RED)
-            game.debug_txt('BOT: '+str(bot), (100,30), RED)                      
+
+            # UPDATE Y ------------------------------------
+            left, right, top, bot = self.get_limits(col)
+
+            # Search for limits
+            min_y = self.search(top, left, right, 0, -1)
+            max_y = self.search(bot, left, right, 0, 1)
+
+            # Limit Y
+            limit = min_y * self.tilemap.tileh + self.tilemap.tileh + col.h
+            if actor.y <= limit:
+                actor.y = limit
+                actor.on_peak()
+            limit = max_y * self.tilemap.tileh
+
+            if actor.y >= limit:
+                actor.y = limit
+                actor.on_land()
+            else:
+                actor.on_air()
+
+            # Update Collider
+            actor.collider = pygame.Rect(actor.x, actor.y, actor.collider.w, actor.collider.h)
+
+
+    #if DEBUG:
+    #    game.debug_txt('LEFT: '+str(min_x), (0,0), RED)
+    #    game.debug_txt('RIGHT: '+str(max_x), (0,10), RED)
+    #    game.debug_txt('TOP: '+str(min_y), (0,20), RED)
+    #    game.debug_txt('BOT: '+str(max_y), (0,30), RED)   
+    #    
+    #    game.debug_txt('LEFT: '+str(left), (100,0), RED)
+    #    game.debug_txt('RIGHT: '+str(right), (100,10), RED)
+    #    game.debug_txt('TOP: '+str(top), (100,20), RED)
+    #    game.debug_txt('BOT: '+str(bot), (100,30), RED)                      
     
 
     # Search for static objects to collide with

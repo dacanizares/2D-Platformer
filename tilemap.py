@@ -3,8 +3,6 @@ import pygame
 import json
 from tile import *
 from tileset import *
-from pygame.locals import *
-from constants import *
 
 class Tilemap:
     def __init__(self):

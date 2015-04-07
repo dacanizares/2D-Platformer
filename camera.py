@@ -1,10 +1,8 @@
 import game
-import pygame
-from pygame.locals import *
 from constants import *
 
 class Camera:
-    def __init__(self, x, y, focus, tilemap, mode=False, offset=0.25):        
+    def __init__(self, x, y, focus, actors, tilemap, mode=False, offset=0.25):        
         self.x = x
         self.y = y
         self.focus = focus
@@ -12,6 +10,7 @@ class Camera:
         self.offset = offset
         self.mode = mode
         self.x = self.focus.x - DISP_W / 2
+        self.actors = [x for x in actors if x != focus]
 
     def update(self):
         if not self.mode:
@@ -56,6 +55,8 @@ class Camera:
                                         i * tile.tileset.tileh - self.y), RED)           
                 
         self.focus.draw(self.focus.x - self.x, self.focus.y - self.y)
+        for actor in self.actors:
+            actor.draw(actor.x - self.x, actor.y - self.y)
     
 
     
