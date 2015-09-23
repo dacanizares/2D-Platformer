@@ -1,4 +1,4 @@
-import pygame
+﻿import pygame
 from pygame import *
 
 def start(w,h):

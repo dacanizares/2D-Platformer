@@ -1,4 +1,4 @@
-import game
+﻿import game
 import pygame
 from constants import *
 from resources import *
@@ -26,9 +26,9 @@ gamelogic = Gamelogic([player,ai], tilemap)
 
 clock = game.clock()
 
-#pygame.mixer.init()
-#pygame.mixer.music.load("sound/hyperfun.mp3")
-#pygame.mixer.music.play(100)
+pygame.mixer.init()
+pygame.mixer.music.load("sound/hyperfun.mp3")
+pygame.mixer.music.play(100)
 
 sheet = game.load_image('graphics/blocks1.png')
 

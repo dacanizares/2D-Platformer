@@ -1,4 +1,4 @@
-import game
+﻿import game
 from actor import *
 from constants import *
 
