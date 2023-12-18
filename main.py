@@ -17,7 +17,7 @@ player = Character(40, 40, pygame.Rect(0,0,20,25), spr_idle, spr_walk, spr_jump,
 jumping_ai = Character(60, 40, pygame.Rect(0,0,20,25), spr_idle, spr_walk, spr_jump, CharacterBehaviors.JUMPING_AI)
 basic_ai = Character(100, 40, pygame.Rect(0,0,20,25), spr_idle, spr_walk, spr_jump, CharacterBehaviors.BASIC_AI)
 
-tilemap = load_map('map1.json')
+tilemap = load_map('maps/map1.json')
 camera = Camera(0, 0, offset=0.3, always_centered=False)
 
 characters = [player, jumping_ai, basic_ai]
