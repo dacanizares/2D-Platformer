@@ -5,7 +5,8 @@ from tilemap_structs import Tile, Tileset
 def start(w,h):
     print('One second, we are awakening the character.')
     pygame.init()
-    pygame.display.set_mode((w, h))
+    flags = DOUBLEBUF
+    pygame.display.set_mode((w, h), flags)
     print('Lets go!')
 
 def apply_alpha(image, colorkey):
