@@ -24,7 +24,7 @@ def load_sprite(sheet, rectangle, colorkey = (0,0,0)):
     image = pygame.Surface(rect.size).convert()
     image.blit(sheet, (0, 0), rect)
     apply_alpha(image, colorkey)
-    return image#pygame.transform.scale2x(image)
+    return image
      
 def load_sprites(sheet, rects, colorkey = (0,0,0)):
     return [load_sprite(sheet, rect, colorkey) for rect in rects]
@@ -86,8 +86,8 @@ def debug_txt(txt,xy,color):
 
 def update():
     screen = pygame.display.get_surface()
-    screen.blit(pygame.transform.scale2x(screen), (0,0))
-    #screen.blit(screen, (0,0))
+    #screen.blit(pygame.transform.scale2x(screen), (0,0))
+    screen.blit(screen, (0,0))
     pygame.display.flip()
 
 def get_events():

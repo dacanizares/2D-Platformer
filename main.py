@@ -11,12 +11,12 @@ from tilemap_scripts import load_map
 
 
 # Game starts!
-game.start(DISP_W*2, DISP_H*2)
+game.start(DISP_W, DISP_H)
 
 resources = Resources()
 
-player = Player(40, 40, pygame.Rect(0,0,15,20), resources.player)
-ai = ControlledCharacter(100, 40, pygame.Rect(0,0,15,35), resources.player)
+player = Player(40, 40, pygame.Rect(0,0,20,25), resources.player)
+ai = ControlledCharacter(100, 40, pygame.Rect(0,0,20,25), resources.player)
 tilemap = load_map('map1.json')
 camera = Camera(0, 0, offset=0.5, always_centered=False)
 actors = [player, ai]
@@ -46,6 +46,6 @@ while True:
     render(camera, actors, tilemap)    
     game.debug_txt('FPS: '+str(clock.get_fps())[:4], (540,380),RED)    
     game.update()
-    clock.tick(120)
+    clock.tick(60)
     
     

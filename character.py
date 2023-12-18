@@ -1,4 +1,5 @@
-﻿import game
+﻿import pygame
+import game
 from actor import *
 from constants import *
 
