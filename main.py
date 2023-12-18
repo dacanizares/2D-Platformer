@@ -1,12 +1,14 @@
 ﻿import game
 import pygame
 from constants import *
+from game_scripts import update_camera
+from game_structs import Camera
 from resources import *
 from player import *
 from camera import *
 from gamelogic import *
 from controlled_character import *
-from tilemap_utils import load_map
+from tilemap_scripts import load_map
 
 
 # Game starts!
@@ -17,7 +19,7 @@ resources = Resources()
 player = Player(40, 40, pygame.Rect(0,0,15,35), resources.player)
 ai = ControlledCharacter(100, 40, pygame.Rect(0,0,15,35), resources.player)
 tilemap = load_map('map1.json')
-camera = Camera(0, 0, player, [player,ai], tilemap, True, 0.25)
+camera = Camera(0, 0, offset=0.5, always_centered=False)
 gamelogic = Gamelogic([player,ai], tilemap)
 
 clock = game.clock()
@@ -40,8 +42,8 @@ while True:
     game.clear()
 
     gamelogic.update(events)
-    camera.update()
-    camera.draw()
+    update_camera(camera, player)
+    render(camera, [player, ai], tilemap)
 
     clock.tick(30)
     game.debug_txt('FPS: '+str(clock.get_fps())[:4], (540,380),RED) 

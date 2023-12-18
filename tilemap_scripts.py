@@ -18,10 +18,13 @@ def load_map(path):
                             game.load_image(t['image']))
         tilemap.tilesets.append(tileset)
 
-        if 'tileproperties' in t:
-            for tile_id in t['tileproperties']:
-                if 'NoCollide' in t['tileproperties'][tile_id] and t['tileproperties'][tile_id]['NoCollide'] == '1':
-                    tilemap.no_collision[int(tile_id) + tileset.firstgid] = True
+        if 'tiles' in t:
+            for tile_meta in t['tiles']:
+                tile_id = tile_meta['id']
+                tile_props = tile_meta['properties']
+                for tile_prop in tile_props:
+                    if tile_prop['name'] == 'NoCollide' and tile_prop['value'] == '1':
+                        tilemap.no_collision[int(tile_id) + tileset.firstgid] = True
 
     # Index GUIDs
     for tileset_idx in range(0, len(tilemap.tilesets)):

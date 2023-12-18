@@ -2,7 +2,7 @@ import game
 import pygame
 from pygame.locals import *
 from constants import *
-from tilemap_utils import Tilemap
+from tilemap_scripts import Tilemap
 
 class Gamelogic:
     def __init__(self, actors, tilemap: Tilemap):        
@@ -26,7 +26,6 @@ class Gamelogic:
         bot = (col.y - 1) / self.tilemap.tilesets[tileset_idx].tileh
 
         return left, right, top, bot
-        
 
     # Updates entities and colliding events
     # events: pygame events to send to entities
@@ -57,8 +56,6 @@ class Gamelogic:
                 actor.on_right()
             # Update collider (just X axis)
             col.x = actor.x
-
-
 
             # UPDATE Y ------------------------------------
             left, right, top, bot = self.get_limits(col)
