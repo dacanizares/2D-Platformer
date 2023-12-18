@@ -44,29 +44,12 @@ def draw(image: Surface, xy: tuple):
     screen.blit(image, xy)
 
 
-tileset_cache_keys = []
-tileset_cache = {}
-def get_rect_hash(rect: pygame.Rect):
-    return f'{rect.left};{rect.top};{rect.width};{rect.height}'
-
-def draw_from_tileset(tileset: Tileset, xy: tuple, rect: pygame.Rect, colorkey=None):
-    if tileset not in tileset_cache_keys:
-        tileset_cache_keys.append(tileset)
-        tileset_cache_key = tileset_cache_keys.index(tileset)
-        tileset_cache[tileset_cache_key] = {}
-        
-    tileset_cache_key = tileset_cache_keys.index(tileset)
-    rect_hash = get_rect_hash(rect)
-    if rect_hash in tileset_cache[tileset_cache_key]:
-        screen = pygame.display.get_surface()
-        screen.blit(tileset_cache[tileset_cache_key][rect_hash], xy)
-    else:    
-        screen = pygame.display.get_surface()
-        image = pygame.Surface(rect.size)
-        image.blit(tileset.sheet, (0, 0), rect)
-        apply_alpha(image, colorkey)
-        tileset_cache[tileset_cache_key][rect_hash] = image
-        screen.blit(image, xy)
+def draw_from_tileset(tileset: Tileset, xy: tuple, rect: pygame.Rect, colorkey=None):   
+    screen = pygame.display.get_surface()
+    image = pygame.Surface(rect.size)
+    image.blit(tileset.sheet, (0, 0), rect)
+    apply_alpha(image, colorkey)
+    screen.blit(image, xy)
 
 def draw_tile(tileset: Tileset, tile: Tile, xy: tuple):
     draw_from_tileset(tileset, xy,
