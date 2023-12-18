@@ -3,12 +3,10 @@ import pygame
 from constants import *
 from resources import *
 from player import *
-from tile import *
-from tilemap import *
-from tileset import *
 from camera import *
 from gamelogic import *
 from controlled_character import *
+from tilemap_utils import load_map
 
 
 # Game starts!

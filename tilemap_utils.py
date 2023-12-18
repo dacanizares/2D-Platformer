@@ -1,20 +1,6 @@
 import game
-import pygame
 import json
-from tile import *
-from tileset import *
-from dataclasses import dataclass, field
-
-@dataclass
-class Tilemap:
-    gindex = {}
-    tilesets = []
-    current_map: list = None
-    current_width: int = 0
-    current_height: int = 0
-    tilew: int = 0
-    tileh: int = 0
-    no_collision = {0: True}
+from tilemap_structs import Tile, Tilemap, Tileset
 
 def load_map(path):
     json_data = open(path)

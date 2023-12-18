@@ -2,7 +2,7 @@ import game
 import pygame
 from pygame.locals import *
 from constants import *
-from tilemap import Tilemap
+from tilemap_utils import Tilemap
 
 class Gamelogic:
     def __init__(self, actors, tilemap: Tilemap):        

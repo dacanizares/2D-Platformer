@@ -47,14 +47,12 @@ class Camera:
                 tile_id = self.tilemap.current_map[i][j]
                 if tile_id != 0:
                     tile = self.tilemap.gindex[tile_id]
-                    
-                    game.draw_tile(self.tilemap.tilesets[tile.tileset_idx], tile,
-                                   j * self.tilemap.tilesets[tile.tileset_idx].tilew - self.x,
-                                   i * self.tilemap.tilesets[tile.tileset_idx].tileh - self.y)
+                    tileset = self.tilemap.tilesets[tile.tileset_idx]
+                    x = j * tileset.tilew - self.x
+                    y = i * tileset.tileh - self.y
+                    game.draw_tile(tileset, tile, (x, y))
                     if DEBUG:
-                        game.debug_txt(str(i)+','+str(j), 
-                                       (j * self.tilemap.tilesets[tile.tileset_idx].tilew - self.x,
-                                        i * self.tilemap.tilesets[tile.tileset_idx].tileh - self.y), RED)           
+                        game.debug_txt(str(i)+','+str(j), (x,y), RED)
                 
         self.focus.draw(self.focus.x - self.x, self.focus.y - self.y)
         for actor in self.actors:

@@ -1,8 +1,7 @@
 ﻿import pygame
 from pygame import *
-from tile import Tile
 
-from tileset import Tileset
+from tilemap_structs import Tile, Tileset
 
 def start(w,h):
     print('One second, we are awakening the character.')
@@ -45,17 +44,17 @@ def draw(image, xy):
     screen = pygame.display.get_surface()
     screen.blit(image, xy)
 
-def _draw_tile(sheet, xy, rect, colorkey=None):
+def draw_from_sheet(sheet, xy: tuple, rect, colorkey=None):
     screen = pygame.display.get_surface()
     image = pygame.Surface(rect.size).convert()
     image.blit(sheet, (0, 0), rect)
     apply_alpha(image, colorkey)
     screen.blit(image, xy)
 
-def draw_tile(tileset: Tileset, tile: Tile, x: int, y: int):
-    _draw_tile(tileset.sheet, (x, y),
-               pygame.Rect(tile.x, tile.y, tileset.tilew, tileset.tileh),
-               to_rgb(tileset.alpha_color))
+def draw_tile(tileset: Tileset, tile: Tile, xy: tuple):
+    draw_from_sheet(tileset.sheet, xy,
+                    pygame.Rect(tile.x, tile.y, tileset.tilew, tileset.tileh),
+                    to_rgb(tileset.alpha_color))
 
 def draw_rect(rect):
     screen = pygame.display.get_surface()
@@ -95,6 +94,6 @@ def clock():
 def new_rect(x,y,size):
     return pygame.Rect(x, y, size[0], size[1])
 
-def to_rgb(color):
-    # TODO: Review
-    return (0,0,0)        
+def to_rgb(color: str):
+    hex_value = color.lstrip('#')
+    return tuple(int(hex_value[i:i+2], 16) for i in (0, 2, 4))
