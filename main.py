@@ -2,7 +2,7 @@
 import game_sdl
 from constants import *
 from characters import *
-from camera import render
+from game_render import render
 from game_structs import Camera, Character, CharacterBehavior, CharacterBehaviors
 from game_scripts import start_characters, update_camera, update_characters
 from sprites import load_sprites
@@ -18,7 +18,7 @@ jumping_ai = Character(60, 40, pygame.Rect(0,0,20,25), spr_idle, spr_walk, spr_j
 basic_ai = Character(100, 40, pygame.Rect(0,0,20,25), spr_idle, spr_walk, spr_jump, CharacterBehaviors.BASIC_AI)
 
 tilemap = load_map('maps/map1.json')
-camera = Camera(0, 0, offset=0.3, always_centered=False)
+camera = Camera(0, 0, always_centered=False)
 
 characters = [player, jumping_ai, basic_ai]
 

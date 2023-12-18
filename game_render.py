@@ -55,7 +55,7 @@ def draw_character(character: Character, xcam, ycam):
                 sprite = character.idle[anim_index][1]
 
     # Center image
-    xoffset = -sprite.get_width()/2
+    xoffset = -sprite.get_width() / 2
     yoffset = -sprite.get_height()
     game_sdl.draw(sprite, (xcam + xoffset, ycam + yoffset))
     if DEBUG:

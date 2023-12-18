@@ -7,7 +7,8 @@ from enum import Enum
 class Camera:
     x: int
     y: int
-    offset: float = 0.25
+    offset_x: float = 0.3
+    offset_y: float = 0.35
     always_centered: bool = False
 
 class CharacterBehaviors(Enum):
