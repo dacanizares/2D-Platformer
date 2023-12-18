@@ -66,15 +66,15 @@ def update():
     pygame.display.flip()
 
 def get_events():
-    eventos = {}
-    for evento in pygame.event.get():
-        if evento.type == KEYDOWN:
-            eventos[evento.key] = True
-        if evento.type == KEYUP:
-            eventos[evento.key] = False
-        elif evento.type == QUIT:
-            eventos['QUIT'] = True
-    return eventos
+    events = {}
+    for event in pygame.event.get():
+        if event.type == KEYDOWN:
+            events[event.key] = True
+        if event.type == KEYUP:
+            events[event.key] = False
+        elif event.type == QUIT:
+            events['QUIT'] = True
+    return events
      
 
 def quit_game():
@@ -88,7 +88,4 @@ def new_rect(x,y,size):
     return pygame.Rect(x, y, size[0], size[1])
 
 def to_rgb(color):
-    return (0,0,0)
-
-
-        
+    return (0,0,0)        
