@@ -117,7 +117,12 @@ class Gamelogic:
     #
     #  It will search on the position marked with X
 
-    def search(self, start, a, b, dx, dy):        
+    def search(self, start, a, b, dx, dy):
+        # Grant that these vars are int
+        start = int(start)
+        a = int(a)
+        b = int(b)
+
         # Validate that we arent searching on diagonals
         if dx != 0 and dy != 0:
             raise Exception('collision search', 'unable to lock on diagonals.')

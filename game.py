@@ -2,10 +2,10 @@
 from pygame import *
 
 def start(w,h):
-    print 'One second, we are awakening the character.'
+    print('One second, we are awakening the character.')
     pygame.init()
     pygame.display.set_mode((w, h))
-    print 'Lets go!'
+    print('Lets go!')
 
 def apply_alpha(image, colorkey):
     if colorkey is not None:

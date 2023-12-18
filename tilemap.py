@@ -35,14 +35,14 @@ class Tilemap:
 
         self.index_gid()
         json_data.close()
-        print self.no_collision
+        print(self.no_collision)
          
     def index_gid(self):
         for tileset in self.tilesets:
             gid = tileset.firstgid
 
-            for i in range(0, tileset.h/(tileset.tileh + tileset.spacing)):
-                for j in range(0, tileset.w/(tileset.tilew + tileset.spacing)):
+            for i in range(0, int(tileset.h/(tileset.tileh + tileset.spacing))):
+                for j in range(0, int(tileset.w/(tileset.tilew + tileset.spacing))):
                     x = j * (tileset.tilew + tileset.spacing) + tileset.margin
                     y = i * (tileset.tileh + tileset.spacing) + tileset.margin 
                     self.gindex[gid] = Tile(x, y, tileset)

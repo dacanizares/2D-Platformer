@@ -31,11 +31,11 @@ class Camera:
                 self.y += self.focus.y - ((self.y + DISP_H) - limit_y)
 
     def draw(self):
-        starting_x = (self.x - 1) / self.tilemap.tilew
-        starting_y = (self.y - 1) / self.tilemap.tileh
+        starting_x = int((self.x - 1) / self.tilemap.tilew)
+        starting_y = int((self.y - 1) / self.tilemap.tileh)
 
-        ending_x = (self.x + DISP_W + 1) / self.tilemap.tilew
-        ending_y = (self.y + DISP_H + 1) / self.tilemap.tileh
+        ending_x = int((self.x + DISP_W + 1) / self.tilemap.tilew)
+        ending_y = int((self.y + DISP_H + 1) / self.tilemap.tileh)
 
         for i in range(starting_y, ending_y+1):
             if i < 0 or i >= self.tilemap.current_height:
