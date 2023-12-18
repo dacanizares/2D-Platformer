@@ -2,9 +2,10 @@ import game
 import pygame
 from pygame.locals import *
 from constants import *
+from tilemap import Tilemap
 
 class Gamelogic:
-    def __init__(self, actors, tilemap):        
+    def __init__(self, actors, tilemap: Tilemap):        
         self.actors = actors
         self.tilemap = tilemap
 
@@ -18,11 +19,11 @@ class Gamelogic:
     # Returns left, right, top and bot rows or cols limiting with.
     # The collider center point is at middle bottom.
 
-    def get_limits(self, col):
-        left = (col.x - col.w / 2 + 1) / self.tilemap.tilew
-        right = (col.x + col.w / 2 - 1) / self.tilemap.tilew
-        top = (col.y - col.h + 1) / self.tilemap.tileh
-        bot = (col.y - 1) / self.tilemap.tileh
+    def get_limits(self, col, tileset_idx=0):
+        left = (col.x - col.w / 2 + 1) / self.tilemap.tilesets[tileset_idx].tilew
+        right = (col.x + col.w / 2 - 1) / self.tilemap.tilesets[tileset_idx].tilew
+        top = (col.y - col.h + 1) / self.tilemap.tilesets[tileset_idx].tileh
+        bot = (col.y - 1) / self.tilemap.tilesets[tileset_idx].tileh
 
         return left, right, top, bot
         
