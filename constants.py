@@ -1,8 +1,6 @@
 # Graphics
 DISP_W = 600
 DISP_H = 400
-XCAM_OFFSET = 50
-YCAM_OFFSET = 50
 
 # Debug
 DEBUG = False

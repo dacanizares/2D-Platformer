@@ -1,55 +1,46 @@
-﻿import game
-import pygame
+﻿import pygame
+import game_sdl
 from constants import *
-from resources import *
-from player import *
-from tile import *
-from tilemap import *
-from tileset import *
-from camera import *
-from gamelogic import *
-from controlled_character import *
+from characters import *
+from game_render import render
+from game_structs import Camera, Character, CharacterBehavior, CharacterBehaviors
+from game_scripts import start_characters, update_camera, update_characters
+from sprites import load_sprites
+from tilemap_scripts import load_map
 
 
 # Game starts!
-game.start(DISP_W*2, DISP_H*2)
+game_sdl.start(DISP_W, DISP_H)
+spr_idle, spr_walk, spr_jump = load_sprites()
 
-resources = Resources()
+# Characters
+player = Character(40, 40, pygame.Rect(0,0,20,25), spr_idle, spr_walk, spr_jump, CharacterBehaviors.PLAYER)
+jumping_ai = Character(60, 40, pygame.Rect(0,0,20,25), spr_idle, spr_walk, spr_jump, CharacterBehaviors.JUMPING_AI)
+basic_ai = Character(100, 40, pygame.Rect(0,0,20,25), spr_idle, spr_walk, spr_jump, CharacterBehaviors.BASIC_AI)
+characters = [player, jumping_ai, basic_ai]
 
-player = Player(40, 40, pygame.Rect(0,0,15,35), resources.player)
-ai = ControlledCharacter(100, 40, pygame.Rect(0,0,15,35), resources.player)
-tilemap = Tilemap()
-tilemap.load_tilesets('map1.json')
-tilemap.load_map('map1.json')
-camera = Camera(0, 0, player, [player,ai], tilemap, True, 0.25)
-gamelogic = Gamelogic([player,ai], tilemap)
+# Map
+tilemap = load_map('maps/map1.json')
+camera = Camera(0, 0, always_centered=False)
 
-clock = game.clock()
-
+# Music
 pygame.mixer.init()
 pygame.mixer.music.load("sound/hyperfun.mp3")
 pygame.mixer.music.play(100)
 
-sheet = game.load_image('graphics/blocks1.png')
-
-
 # Gameloop
-gamelogic.start()
-while True:
-    events = game.get_events()
+start_characters(characters, character_behaviors)
+clock = game_sdl.clock()
+while True:    
+    events = game_sdl.get_events()
     if 'QUIT' in events:
-        game.quit_game()
+        game_sdl.quit_game()
         break
     
-    game.clear()
-
-    gamelogic.update(events)
-    camera.update()
-    camera.draw()
-
-    clock.tick(30)
-    game.debug_txt('FPS: '+str(clock.get_fps())[:4], (540,380),RED) 
-    
-    game.update()
-    
-    
+    game_sdl.clear()
+    update_characters(characters, character_behaviors, events, tilemap)
+    update_camera(camera, player)
+    render(camera, characters, tilemap)
+    game_sdl.debug_txt('FPS: '+str(clock.get_fps())[:4], (540,380),RED)  
+    game_sdl.update()
+    clock.tick(60)
