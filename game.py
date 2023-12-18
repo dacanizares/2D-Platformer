@@ -82,18 +82,13 @@ def get_events():
             events[event.key] = False
         elif event.type == QUIT:
             events['QUIT'] = True
-    return events
-     
+    return events     
 
 def quit_game():
     pygame.quit()
 
 def clock():
     return pygame.time.Clock()
-
-
-def new_rect(x, y, size):
-    return pygame.Rect(x, y, size[0], size[1])
 
 def to_rgb(color: str):
     hex_value = color.lstrip('#')
