@@ -1,5 +1,5 @@
 ﻿import pygame
-import game
+import game_sdl
 from constants import *
 from game_structs import Character, CharacterBehavior, CharacterBehaviors
 

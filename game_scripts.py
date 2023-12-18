@@ -97,15 +97,15 @@ def update_characters(characters: list[Character], behaviors: dict, events: dict
 
 
 #if DEBUG:
-#    game.debug_txt('LEFT: '+str(min_x), (0,0), RED)
-#    game.debug_txt('RIGHT: '+str(max_x), (0,10), RED)
-#    game.debug_txt('TOP: '+str(min_y), (0,20), RED)
-#    game.debug_txt('BOT: '+str(max_y), (0,30), RED)   
+#    game_sdldebug_txt('LEFT: '+str(min_x), (0,0), RED)
+#    game_sdldebug_txt('RIGHT: '+str(max_x), (0,10), RED)
+#    game_sdldebug_txt('TOP: '+str(min_y), (0,20), RED)
+#    game_sdldebug_txt('BOT: '+str(max_y), (0,30), RED)   
 #    
-#    game.debug_txt('LEFT: '+str(left), (100,0), RED)
-#    game.debug_txt('RIGHT: '+str(right), (100,10), RED)
-#    game.debug_txt('TOP: '+str(top), (100,20), RED)
-#    game.debug_txt('BOT: '+str(bot), (100,30), RED)                      
+#    game_sdldebug_txt('LEFT: '+str(left), (100,0), RED)
+#    game_sdldebug_txt('RIGHT: '+str(right), (100,10), RED)
+#    game_sdldebug_txt('TOP: '+str(top), (100,20), RED)
+#    game_sdldebug_txt('BOT: '+str(bot), (100,30), RED)                      
 
 
 # Search for static objects to collide with

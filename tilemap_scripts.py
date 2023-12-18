@@ -1,4 +1,4 @@
-import game
+import game_sdl
 import json
 from tilemap_structs import Tile, Tilemap, Tileset
 
@@ -15,7 +15,7 @@ def load_map(path):
                             t['tilewidth'], t['tileheight'], 
                             t['margin'], t['spacing'],
                             t['firstgid'], t['transparentcolor'],
-                            game.load_image(t['image']))
+                            game_sdl.load_image(t['image']))
         tilemap.tilesets.append(tileset)
 
         if 'tiles' in t:

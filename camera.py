@@ -1,5 +1,5 @@
 import pygame
-import game
+import game_sdl
 from constants import *
 from game_structs import Camera, Character
 from tilemap_structs import Tilemap
@@ -25,9 +25,9 @@ def render(camera: Camera, characters: list[Character], tilemap: Tilemap):
                 tileset = tilemap.tilesets[tile.tileset_idx]
                 x = j * tileset.tilew - camera.x
                 y = i * tileset.tileh - camera.y
-                game.draw_tile(tileset, tile, (x, y))
+                game_sdl.draw_tile(tileset, tile, (x, y))
                 if DEBUG:
-                    game.debug_txt(str(i)+','+str(j), (x,y), RED)
+                    game_sdl.debug_txt(str(i)+','+str(j), (x,y), RED)
     for character in characters:
         draw_character(character, character.x - camera.x, character.y - camera.y)
 
@@ -57,6 +57,6 @@ def draw_character(character: Character, xcam, ycam):
     # Center image
     xoffset = -sprite.get_width()/2
     yoffset = -sprite.get_height()
-    game.draw(sprite, (xcam + xoffset, ycam + yoffset))
+    game_sdl.draw(sprite, (xcam + xoffset, ycam + yoffset))
     if DEBUG:
-        game.draw_rect(pygame.Rect(xcam - character.collider.w/2, ycam - character.collider.h, character.collider.w, character.collider.h))
+        game_sdldraw_rect(pygame.Rect(xcam - character.collider.w/2, ycam - character.collider.h, character.collider.w, character.collider.h))

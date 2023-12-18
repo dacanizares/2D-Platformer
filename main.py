@@ -1,6 +1,6 @@
 ﻿from camera import render
 from character import *
-import game
+import game_sdl
 import pygame
 from constants import *
 from game_scripts import start_characters, update_camera, update_characters
@@ -10,7 +10,7 @@ from tilemap_scripts import load_map
 
 
 # Game starts!
-game.start(DISP_W, DISP_H)
+game_sdl.start(DISP_W, DISP_H)
 spr_idle, spr_walk, spr_jump = load_sprites()
 
 player = Character(40, 40, pygame.Rect(0,0,20,25), spr_idle, spr_walk, spr_jump, CharacterBehaviors.PLAYER)
@@ -22,26 +22,26 @@ camera = Camera(0, 0, offset=0.3, always_centered=False)
 
 characters = [player, jumping_ai, basic_ai]
 
-clock = game.clock()
+clock = game_sdl.clock()
 
 pygame.mixer.init()
 pygame.mixer.music.load("sound/hyperfun.mp3")
 pygame.mixer.music.play(100)
 
-sheet = game.load_image('graphics/blocks1.png')
+sheet = game_sdl.load_image('graphics/blocks1.png')
 
 # Gameloop
 start_characters(characters, character_behaviors)
 while True:    
-    events = game.get_events()
+    events = game_sdl.get_events()
     if 'QUIT' in events:
-        game.quit_game()
+        game_sdl.quit_game()
         break
     
-    game.clear()
+    game_sdl.clear()
     update_characters(characters, character_behaviors, events, tilemap)
     update_camera(camera, player)
     render(camera, characters, tilemap)
-    game.debug_txt('FPS: '+str(clock.get_fps())[:4], (540,380),RED)  
-    game.update()
+    game_sdl.debug_txt('FPS: '+str(clock.get_fps())[:4], (540,380),RED)  
+    game_sdl.update()
     clock.tick(60)
