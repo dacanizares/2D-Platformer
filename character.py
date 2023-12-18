@@ -1,115 +1,68 @@
 ﻿import pygame
 import game
-from actor import *
 from constants import *
+from game_structs import Character, CharacterBehavior
 
-##
-## Character is the base class for movable actors
-##
-## The intention of this class is to enable programmers to easily create basic characters,
-## if you need complex behaviors, derive directly from Actor.
-class Character(Actor):
-    # Creates a character
-    #   x, y:       position
-    #   collider:   pygame.Rect representing the actor collidable area
-    #   resources:  sprites to draw.
-    #               [[IDLE_RIGHT(2 sprites), IDLE_LEFT(2 sprites)],
-    #                [WALKING_RIGHT, WALKING_LEFT],
-    #                [JUMPING_RIGHT, JUMPING LEFT]]
-    #
-    def __init__(self, x, y, collider, resources):        
-        # Position
-        self.x = x
-        self.y = y
 
-        # Custom attributes
-        self.vy = 0
-        self.frame = 0
-        self.direction = True
-        self.land = False
-        self.right = False
-        self.left = False
-        self.jump  = False
-        self.delta_frames = 0
-        self.stop = False
-
-        # Static collisions
-        collider.x = x
-        collider.y = y
-        self.collider = collider
-        
-        # Actions
-        self.idle = resources[0]
-        self.walking = resources[1]
-        self.jumping = resources[2]
-
-    def update_events(self, events):
+def update_character(character: Character, events: dict):
+    if character.stop:
         return
-
-    def update(self): 
-        if self.stop:
-            return
-               
-        # X movement
-        if self.right:
-            self.x += VEL_X            
-        if self.left:
-            self.x -= VEL_X           
-                           
-        # Y movement
-        if self.land and self.jump:
-            self.vy = -VEL_Y
-            self.land = False
             
-        self.y += self.vy            
+    # X movement
+    if character.right:
+        character.x += VEL_X
+    if character.left:
+        character.x -= VEL_X
+    
+    # Y movement
+    if character.land and character.jump:
+        character.vy = -VEL_Y
+        character.land = False
+        
+    character.y += character.vy
 
-    def on_land(self):
-        self.land = True
-        self.vy = 0
+def update_player(player: Character, events: dict):
+    if pygame.K_RIGHT in events:
+        if not player.right:
+            player.direction = True
+            player.frame = 0
+        player.right = events[pygame.K_RIGHT]
+        
+    if pygame.K_LEFT in events:
+        if not player.left:
+            player.direction = False
+            player.frame = 0
+        player.left = events[pygame.K_LEFT]
+        
+    if pygame.K_UP in events:
+        player.jump = events[pygame.K_UP]
+        player.frame = 0
 
-    def on_peak(self):
-        if self.vy < 0:
-            self.vy = 0
+    if pygame.K_SPACE in events:
+        player.stop = events[pygame.K_SPACE]
 
-    def on_air(self):
-        self.land = False
-        self.vy = min(self.vy + GRAVITY, MAX_VY)  
+    update_character(player, events)
 
-    def on_left(self):
-        pass
+def on_land(character: Character):
+    character.land = True
+    character.vy = 0
 
-    def on_right(self):
-        pass
+def on_peak(character: Character):
+    if character.vy < 0:
+        character.vy = 0
 
-    def on_start(self):
-        pass
+def on_air(character: Character):
+    character.land = False
+    character.vy = min(character.vy + GRAVITY, MAX_VY)  
+
+def on_left(character: Character):
+    pass
+
+def on_right(character: Character):
+    pass
+
+def on_start(character: Character):
+    pass
 
 
-    def draw(self, xcam, ycam):
-        if self.direction:
-            anim_index = 0
-        else:
-            anim_index = 1
-            
-        if not self.land:
-            if self.vy < 0:
-                sprite = self.jumping[anim_index][1]
-            else:
-                sprite = self.jumping[anim_index][0]
-        else:
-            if self.right or self.left:
-                sprite = self.walking[anim_index][self.frame]
-                self.frame = (self.frame + 1) % len(self.walking[anim_index])                
-            else:
-                self.delta_frames = (self.delta_frames + 1) % 120                
-                if self.delta_frames < 90:
-                    sprite = self.idle[anim_index][0]
-                else:
-                    sprite = self.idle[anim_index][1]
-
-        # Center image
-        xoffset = -sprite.get_width()/2
-        yoffset = -sprite.get_height()
-        game.draw(sprite, (xcam + xoffset, ycam + yoffset))
-        if DEBUG:
-            game.draw_rect(pygame.Rect(xcam - self.collider.w/2, ycam - self.collider.h, self.collider.w, self.collider.h))
+player_behavior = CharacterBehavior(update_player, on_land, on_peak, on_air, on_left, on_right, on_start)

@@ -1,11 +1,10 @@
 import game
 import pygame
-from character import *
 from pygame.locals import *
 from constants import *
 
 
-class ControlledCharacter(Character):
+class ControlledCharacter():
     def on_left(self):
         self.direction = True
         self.right = True

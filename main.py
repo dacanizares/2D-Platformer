@@ -1,11 +1,12 @@
 ﻿from camera import render
+from character import *
 import game
 import pygame
 from constants import *
-from game_scripts import start_actors, update_actors, update_camera
-from game_structs import Camera
+from game_scripts import start_characters, update_camera, update_characters
+from game_structs import Camera, Character, CharacterBehavior, CharacterConfig
 from resources import *
-from player import *
+
 from controlled_character import *
 from tilemap_scripts import load_map
 
@@ -15,11 +16,15 @@ game.start(DISP_W, DISP_H)
 
 resources = Resources()
 
-player = Player(40, 40, pygame.Rect(0,0,20,25), resources.player)
-ai = ControlledCharacter(100, 40, pygame.Rect(0,0,20,25), resources.player)
+player = Character(40, 40, pygame.Rect(0,0,20,25), resources.player[0], resources.player[1], resources.player[2])
+player_behavior = CharacterBehavior(update_player, on_land, on_peak, on_air, on_left, on_right, on_start)
+player_config = CharacterConfig(player, player_behavior)
+#ai = ControlledCharacter(100, 40, pygame.Rect(0,0,20,25), resources.player)
 tilemap = load_map('map1.json')
 camera = Camera(0, 0, offset=0.5, always_centered=False)
-actors = [player, ai]
+
+characters = [player]
+characters_config = [player_config]#, ai]
 
 clock = game.clock()
 
@@ -31,7 +36,7 @@ sheet = game.load_image('graphics/blocks1.png')
 
 
 # Gameloop
-start_actors(actors)
+start_characters(characters_config)
 while True:
     
     events = game.get_events()
@@ -41,9 +46,9 @@ while True:
     
     game.clear()
 
-    update_actors(actors, events, tilemap)
+    update_characters(characters_config, events, tilemap)
     update_camera(camera, player)
-    render(camera, actors, tilemap)    
+    render(camera, characters, tilemap)    
     game.debug_txt('FPS: '+str(clock.get_fps())[:4], (540,380),RED)    
     game.update()
     clock.tick(60)

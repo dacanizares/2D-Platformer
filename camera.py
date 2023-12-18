@@ -1,8 +1,11 @@
+import pygame
 import game
 from constants import *
+from game_structs import Camera, Character
+from tilemap_structs import Tilemap
 
 
-def render(camera, actors, tilemap):
+def render(camera: Camera, characters: list[Character], tilemap: Tilemap):
     starting_x = int((camera.x - 1) / tilemap.tilew)
     starting_y = int((camera.y - 1) / tilemap.tileh)
 
@@ -25,5 +28,35 @@ def render(camera, actors, tilemap):
                 game.draw_tile(tileset, tile, (x, y))
                 if DEBUG:
                     game.debug_txt(str(i)+','+str(j), (x,y), RED)
-    for actor in actors:
-        actor.draw(actor.x - camera.x, actor.y - camera.y)
+    for character in characters:
+        draw_character(character, character.x - camera.x, character.y - camera.y)
+
+
+def draw_character(character: Character, xcam, ycam):
+    if character.direction:
+        anim_index = 0
+    else:
+        anim_index = 1
+        
+    if not character.land:
+        if character.vy < 0:
+            sprite = character.jumping[anim_index][1]
+        else:
+            sprite = character.jumping[anim_index][0]
+    else:
+        if character.right or character.left:
+            sprite = character.walking[anim_index][character.frame]
+            character.frame = (character.frame + 1) % len(character.walking[anim_index])                
+        else:
+            character.delta_frames = (character.delta_frames + 1) % 120                
+            if character.delta_frames < 90:
+                sprite = character.idle[anim_index][0]
+            else:
+                sprite = character.idle[anim_index][1]
+
+    # Center image
+    xoffset = -sprite.get_width()/2
+    yoffset = -sprite.get_height()
+    game.draw(sprite, (xcam + xoffset, ycam + yoffset))
+    if DEBUG:
+        game.draw_rect(pygame.Rect(xcam - character.collider.w/2, ycam - character.collider.h, character.collider.w, character.collider.h))
