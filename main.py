@@ -1,10 +1,10 @@
-﻿from camera import render
-from character import *
+﻿import pygame
 import game_sdl
-import pygame
 from constants import *
-from game_scripts import start_characters, update_camera, update_characters
+from characters import *
+from camera import render
 from game_structs import Camera, Character, CharacterBehavior, CharacterBehaviors
+from game_scripts import start_characters, update_camera, update_characters
 from sprites import load_sprites
 from tilemap_scripts import load_map
 
