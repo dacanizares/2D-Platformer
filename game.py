@@ -43,17 +43,35 @@ def draw(image: Surface, xy: tuple):
     screen = pygame.display.get_surface()
     screen.blit(image, xy)
 
-def draw_from_sheet(sheet, xy: tuple, rect, colorkey=None):
-    screen = pygame.display.get_surface()
-    image = pygame.Surface(rect.size).convert()
-    image.blit(sheet, (0, 0), rect)
-    apply_alpha(image, colorkey)
-    screen.blit(image, xy)
+
+tileset_cache_keys = []
+tileset_cache = {}
+def get_rect_hash(rect: pygame.Rect):
+    return f'{rect.left};{rect.top};{rect.width};{rect.height}'
+
+def draw_from_tileset(tileset: Tileset, xy: tuple, rect: pygame.Rect, colorkey=None):
+    if tileset not in tileset_cache_keys:
+        tileset_cache_keys.append(tileset)
+        tileset_cache_key = tileset_cache_keys.index(tileset)
+        tileset_cache[tileset_cache_key] = {}
+        
+    tileset_cache_key = tileset_cache_keys.index(tileset)
+    rect_hash = get_rect_hash(rect)
+    if rect_hash in tileset_cache[tileset_cache_key]:
+        screen = pygame.display.get_surface()
+        screen.blit(tileset_cache[tileset_cache_key][rect_hash], xy)
+    else:    
+        screen = pygame.display.get_surface()
+        image = pygame.Surface(rect.size)
+        image.blit(tileset.sheet, (0, 0), rect)
+        apply_alpha(image, colorkey)
+        tileset_cache[tileset_cache_key][rect_hash] = image
+        screen.blit(image, xy)
 
 def draw_tile(tileset: Tileset, tile: Tile, xy: tuple):
-    draw_from_sheet(tileset.sheet, xy,
-                    pygame.Rect(tile.x, tile.y, tileset.tilew, tileset.tileh),
-                    to_rgb(tileset.alpha_color))
+    draw_from_tileset(tileset, xy,
+                      pygame.Rect(tile.x, tile.y, tileset.tilew, tileset.tileh),
+                      to_rgb(tileset.alpha_color))
 
 def draw_rect(rect):
     screen = pygame.display.get_surface()
@@ -69,6 +87,7 @@ def debug_txt(txt,xy,color):
 def update():
     screen = pygame.display.get_surface()
     screen.blit(pygame.transform.scale2x(screen), (0,0))
+    #screen.blit(screen, (0,0))
     pygame.display.flip()
 
 def get_events():

@@ -33,6 +33,7 @@ sheet = game.load_image('graphics/blocks1.png')
 # Gameloop
 start_actors(actors)
 while True:
+    
     events = game.get_events()
     if 'QUIT' in events:
         game.quit_game()
@@ -42,11 +43,9 @@ while True:
 
     update_actors(actors, events, tilemap)
     update_camera(camera, player)
-    render(camera, actors, tilemap)
-
-    clock.tick(120)
-    game.debug_txt('FPS: '+str(clock.get_fps())[:4], (540,380),RED) 
-    
+    render(camera, actors, tilemap)    
+    game.debug_txt('FPS: '+str(clock.get_fps())[:4], (540,380),RED)    
     game.update()
+    clock.tick(120)
     
     
