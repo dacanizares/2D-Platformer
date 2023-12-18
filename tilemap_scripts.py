@@ -43,7 +43,9 @@ def load_map(path):
     tilemap.current_width = data['width']
     
     tilemap.current_map = []
-    map_data = data['layers'][0]['data']#CHANGE THIS!
+
+    # NOTE: We only support a single layered map.
+    map_data = data['layers'][0]['data']
     for i in range(tilemap.current_height):
         row = []
         for j in range(tilemap.current_width):

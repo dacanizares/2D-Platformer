@@ -5,7 +5,7 @@ from pygame.locals import *
 class Resources:
     def __init__(self):
         # Carga de imagenes
-        sheet = game.load_image('graphics/arc22.png')
+        sheet = game.load_image('graphics/arc2.png')
         #rects = [#pygame.Rect(514,8,24,34),
         #        pygame.Rect(550,8,30,34),
         #         pygame.Rect(582,8,28,34),
@@ -33,11 +33,3 @@ class Resources:
             [quieto_der, quieto_izq],
             [caminando_der,caminando_izq],            
             [saltando_der, saltando_izq]]
-
-        
-        sheet = game.load_image('graphics/blocks11.png')
-        suelo = game.load_sprite(sheet, pygame.Rect(444,104,32,32))
-        subsuelo = game.load_sprite(sheet, pygame.Rect(172,138,32,32))
-        self.tiles = [suelo, subsuelo]
-    
-        
