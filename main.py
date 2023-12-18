@@ -18,8 +18,7 @@ resources = Resources()
 
 player = Player(40, 40, pygame.Rect(0,0,15,35), resources.player)
 ai = ControlledCharacter(100, 40, pygame.Rect(0,0,15,35), resources.player)
-tilemap = Tilemap()
-tilemap.load('map1.json')
+tilemap = load_map('map1.json')
 camera = Camera(0, 0, player, [player,ai], tilemap, True, 0.25)
 gamelogic = Gamelogic([player,ai], tilemap)
 
