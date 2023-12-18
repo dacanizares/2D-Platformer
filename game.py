@@ -6,7 +6,7 @@ def start(w,h):
     print('One second, we are awakening the character.')
     pygame.init()
     flags = DOUBLEBUF
-    pygame.display.set_mode((w, h), flags)
+    pygame.display.set_mode((w*2, h*2), flags)
     print('Lets go!')
 
 def apply_alpha(image, colorkey):
@@ -70,8 +70,7 @@ def debug_txt(txt,xy,color):
 
 def update():
     screen = pygame.display.get_surface()
-    #screen.blit(pygame.transform.scale2x(screen), (0,0))
-    screen.blit(screen, (0,0))
+    screen.blit(pygame.transform.scale2x(screen), (0,0))
     pygame.display.flip()
 
 def get_events():

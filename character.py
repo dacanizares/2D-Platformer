@@ -1,7 +1,7 @@
 ﻿import pygame
 import game
 from constants import *
-from game_structs import Character, CharacterBehavior
+from game_structs import Character, CharacterBehavior, CharacterBehaviors
 
 
 def update_character(character: Character, events: dict):
@@ -64,5 +64,28 @@ def on_right(character: Character):
 def on_start(character: Character):
     pass
 
+# Controlled character
+def on_left_move(character: Character):
+    character.direction = True
+    character.right = True
+    character.left = False
 
-player_behavior = CharacterBehavior(update_player, on_land, on_peak, on_air, on_left, on_right, on_start)
+def on_right_move(character: Character):
+    character.direction = False        
+    character.right = False
+    character.left = True
+
+def on_start_move(character: Character):
+    character.direction = True
+    character.right = True
+
+def on_start_jump(character: Character):
+    character.direction = True
+    character.right = True
+    character.jump = True    
+
+character_behaviors = {
+    CharacterBehaviors.PLAYER: CharacterBehavior(update_player, on_land, on_peak, on_air, on_left, on_right, on_start),
+    CharacterBehaviors.JUMPING_AI: CharacterBehavior(update_character, on_land, on_peak, on_air, on_left_move, on_right_move, on_start_jump),
+    CharacterBehaviors.BASIC_AI: CharacterBehavior(update_character, on_land, on_peak, on_air, on_left_move, on_right_move, on_start_move),
+}

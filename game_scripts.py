@@ -2,12 +2,12 @@
 
 import pygame
 from constants import DISP_H, DISP_W
-from game_structs import Camera, CharacterConfig
+from game_structs import Camera, Character
 from tilemap_structs import Tilemap
 
 
 def update_camera(camera: Camera, focus_location: tuple):
-    if not camera.always_centered:
+    if camera.always_centered:
         camera.x = focus_location.x - DISP_W / 2
         camera.y = focus_location.y - DISP_H * 3 / 4
     else:
@@ -18,17 +18,16 @@ def update_camera(camera: Camera, focus_location: tuple):
         elif focus_location.x > (camera.x + DISP_W) - limit_x:
             camera.x += focus_location.x - ((camera.x + DISP_W) - limit_x)
 
-        limit_y = int(focus_location.offset * DISP_H)
+        limit_y = int(camera.offset * DISP_H)
         if focus_location.y < camera.y + limit_y:
             camera.y -= (camera.y + limit_y) - focus_location.y 
         elif focus_location.y > (camera.y + DISP_H) - limit_y:
             camera.y += focus_location.y - ((camera.y + DISP_H) - limit_y)
 
 
-def start_characters(characters_config: list[CharacterConfig]):   
-    for character_config in characters_config:
-        character = character_config.character
-        character_config.behavior.on_start(character)
+def start_characters(characters: list[Character], behaviors: dict):   
+    for character in characters:
+        behaviors[character.behavior_type].on_start(character)
 
 
 # Get collider limits.
@@ -46,10 +45,10 @@ def _get_limits(tilemap: Tilemap, col: pygame.Rect, tileset_idx: int=0):
 
 # Updates entities and colliding events
 # events: pygame events to send to entities
-def update_characters(characters_config: list[CharacterConfig], events: dict, tilemap: Tilemap):
-    for character_config in characters_config:
-        character = character_config.character
-        character_config.behavior.update(character_config.character, events)
+def update_characters(characters: list[Character], behaviors: dict, events: dict, tilemap: Tilemap):
+    for character in characters:
+        behavior = behaviors[character.behavior_type]
+        behavior.update(character, events)
     
         # Collider to compare with
         col = character.collider
@@ -65,11 +64,11 @@ def update_characters(characters_config: list[CharacterConfig], events: dict, ti
         limit = min_x * tilemap.tilew + tilemap.tilew + col.w / 2
         if character.x <= limit:
             character.x = limit
-            character_config.behavior.on_left(character)
+            behavior.on_left(character)
         limit = max_x * tilemap.tilew - col.w / 2        
         if character.x >= limit:
             character.x = limit      
-            character_config.behavior.on_right(character)
+            behavior.on_right(character)
         # Update collider (just X axis)
         col.x = character.x
 
@@ -84,14 +83,14 @@ def update_characters(characters_config: list[CharacterConfig], events: dict, ti
         limit = min_y * tilemap.tileh + tilemap.tileh + col.h
         if character.y <= limit:
             character.y = limit
-            character_config.behavior.on_peak(character)
+            behavior.on_peak(character)
         limit = max_y * tilemap.tileh
 
         if character.y >= limit:
             character.y = limit
-            character_config.behavior.on_land(character)
+            behavior.on_land(character)
         else:
-            character_config.behavior.on_air(character)
+            behavior.on_air(character)
 
         # Update Collider
         character.collider = pygame.Rect(character.x, character.y, character.collider.w, character.collider.h)

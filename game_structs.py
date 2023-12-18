@@ -1,6 +1,7 @@
-from typing import Callable
 import pygame
+from typing import Callable
 from dataclasses import dataclass
+from enum import Enum
 
 @dataclass
 class Camera:
@@ -9,7 +10,10 @@ class Camera:
     offset: float = 0.25
     always_centered: bool = False
 
-
+class CharacterBehaviors(Enum):
+    PLAYER = 0
+    JUMPING_AI = 1
+    BASIC_AI = 2
 
 @dataclass
 class Character:
@@ -22,6 +26,8 @@ class Character:
     idle: list[pygame.Surface]
     walking: list[pygame.Surface]
     jumping: list[pygame.Surface]
+
+    behavior_type: CharacterBehaviors
 
     # Default state
     vy: float = 0
@@ -45,8 +51,3 @@ class CharacterBehavior:
     on_left: Callable[[Character], None]
     on_right: Callable[[Character], None]
     on_start: Callable[[Character], None]
-
-@dataclass
-class CharacterConfig:
-    character: Character
-    behavior: CharacterBehavior
