@@ -30,17 +30,19 @@ def start_characters(characters: list[Character], behaviors: dict):
         behaviors[character.behavior_type].on_start(character)
 
 
-# Get collider limits.
+# Project collider to tilemap.
 # col: pygame.Rect
 # tileset_idx: where to get dimensions from, by default idx=0
 #
 # Returns left, right, top and bot rows or cols limiting with.
 # The collider center point is at middle bottom.
-def _get_limits(tilemap: Tilemap, col: pygame.Rect, tileset_idx: int=0):
-    left = (col.x - col.w / 2 + 1) / tilemap.tilesets[tileset_idx].tilew
-    right = (col.x + col.w / 2 - 1) / tilemap.tilesets[tileset_idx].tilew
-    top = (col.y - col.h + 1) / tilemap.tilesets[tileset_idx].tileh
-    bot = (col.y - 1) / tilemap.tilesets[tileset_idx].tileh
+def _project_collider_to_tilemap(col: pygame.Rect, tilemap: Tilemap, tileset_idx: int=0):
+    tile_w = tilemap.tilesets[tileset_idx].tilew
+    tile_h = tilemap.tilesets[tileset_idx].tileh
+    left = (col.x - col.w / 2 + 1) / tile_w
+    right = (col.x + col.w / 2 - 1) / tile_w
+    top = (col.y - col.h + 1) / tile_h
+    bot = (col.y - 1) / tile_h
     return left, right, top, bot
 
 # Updates entities and colliding events
@@ -54,7 +56,7 @@ def update_characters(characters: list[Character], behaviors: dict, events: dict
         col = character.collider
 
         # UPDATE X --------------------------------------
-        left, right, top, bot = _get_limits(tilemap, col)
+        left, right, top, bot = _project_collider_to_tilemap(col, tilemap)
 
         # Search for limits
         min_x = _search_collisions(tilemap, left, top, bot, -1 , 0)
@@ -73,7 +75,7 @@ def update_characters(characters: list[Character], behaviors: dict, events: dict
         col.x = character.x
 
         # UPDATE Y ------------------------------------
-        left, right, top, bot = _get_limits(tilemap, col)
+        left, right, top, bot = _project_collider_to_tilemap(col, tilemap)
 
         # Search for limits
         min_y = _search_collisions(tilemap, top, left, right, 0, -1)
