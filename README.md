@@ -2,6 +2,8 @@
 
 A simple 2D Platformer built with PyGame.
 
+![2d platformer pygame](.docs/screenshot.png)
+
 ## Highlights
 
 * No OOP stuff were possible (no inheritance, no polymorphism, no virtual methods and no patterns -ever) but still Python, so you will find [data classes that are the closest thing in PY to a C-like struct](https://stackoverflow.com/questions/35988/c-like-structures-in-python) also some 3rd party PyGame classes.
