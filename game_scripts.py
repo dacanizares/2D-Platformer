@@ -1,7 +1,7 @@
 
 
 import pygame
-from constants import DISP_H, DISP_W
+from constants import DISP_H, DISP_W, VY_COLLIDE
 from game_structs import Camera, Character
 from tilemap_structs import Tilemap
 
@@ -48,6 +48,7 @@ def _project_collider_to_tilemap(col: pygame.Rect, tilemap: Tilemap, tileset_idx
 # Updates entities and colliding events
 # events: pygame events to send to entities
 def update_characters(characters: list[Character], behaviors: dict, events: dict, tilemap: Tilemap):
+    # Static collisions (against map)
     for character in characters:
         behavior = behaviors[character.behavior_type]
         behavior.update(character, events)
@@ -97,17 +98,22 @@ def update_characters(characters: list[Character], behaviors: dict, events: dict
         # Update Collider
         character.collider = pygame.Rect(character.x, character.y, character.collider.w, character.collider.h)
 
+    # Dynamic collisions
+    for character_a_idx in range(0, len(characters) - 1):
+        character_a = characters[character_a_idx]
+        for character_b_idx in range(character_a_idx + 1, len(characters)):
+            character_b = characters[character_b_idx]
+            
+            if character_a.collider.colliderect(character_b.collider):
+                if character_a.collider.top < character_b.collider.top:
+                    is_top_a = True
+                else:
+                    is_top_a = False
 
-#if DEBUG:
-#    game_sdldebug_txt('LEFT: '+str(min_x), (0,0), RED)
-#    game_sdldebug_txt('RIGHT: '+str(max_x), (0,10), RED)
-#    game_sdldebug_txt('TOP: '+str(min_y), (0,20), RED)
-#    game_sdldebug_txt('BOT: '+str(max_y), (0,30), RED)   
-#    
-#    game_sdldebug_txt('LEFT: '+str(left), (100,0), RED)
-#    game_sdldebug_txt('RIGHT: '+str(right), (100,10), RED)
-#    game_sdldebug_txt('TOP: '+str(top), (100,20), RED)
-#    game_sdldebug_txt('BOT: '+str(bot), (100,30), RED)                      
+                behavior_a = behaviors[character_a.behavior_type]
+                behavior_b = behaviors[character_b.behavior_type]
+                behavior_a.on_collide(character_a, is_top_a)
+                behavior_b.on_collide(character_b, not is_top_a)
 
 
 # Search for static objects to collide with

@@ -6,10 +6,15 @@ DISP_H = 400
 DEBUG = False
 RED = (255,0,0)
 YELLOW = (255,255,0)
-MAX_VY = 15
-VEL_X = 5
-VEL_Y = 15
-GRAVITY = 1
+
+# Characters
+DELTA_FRAME = 0.5 # Animation speed
+SLEEP = 60
+VY_COLLIDE = 10
+MAX_VY = 13
+VEL_X = 3
+VEL_Y = 12
+GRAVITY = 0.6
 
 # Static collisions
 MAX_DIST_COL = 500

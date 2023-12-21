@@ -37,16 +37,19 @@ def draw_character(character: Character, xcam, ycam):
         anim_index = 0
     else:
         anim_index = 1
-        
-    if not character.land:
+
+    if character.sleep:
+        sprite = character.idle[anim_index][int(character.frame)]
+        character.frame = (character.frame + DELTA_FRAME) % len(character.idle[anim_index])
+    elif not character.land:
         if character.vy < 0:
             sprite = character.jumping[anim_index][1]
         else:
             sprite = character.jumping[anim_index][0]
     else:
         if character.right or character.left:
-            sprite = character.walking[anim_index][character.frame]
-            character.frame = (character.frame + 1) % len(character.walking[anim_index])                
+            sprite = character.walking[anim_index][int(character.frame)]
+            character.frame = (character.frame + DELTA_FRAME) % len(character.walking[anim_index])                
         else:
             character.delta_frames = (character.delta_frames + 1) % 120                
             if character.delta_frames < 90:
@@ -59,4 +62,4 @@ def draw_character(character: Character, xcam, ycam):
     yoffset = -sprite.get_height()
     game_sdl.draw(sprite, (xcam + xoffset, ycam + yoffset))
     if DEBUG:
-        game_sdldraw_rect(pygame.Rect(xcam - character.collider.w/2, ycam - character.collider.h, character.collider.w, character.collider.h))
+        game_sdl.draw_rect(pygame.Rect(xcam - character.collider.w/2, ycam - character.collider.h, character.collider.w, character.collider.h))

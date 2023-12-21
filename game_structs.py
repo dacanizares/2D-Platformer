@@ -7,7 +7,7 @@ from enum import Enum
 class Camera:
     x: int
     y: int
-    offset_x: float = 0.3
+    offset_x: float = 0.4
     offset_y: float = 0.35
     always_centered: bool = False
 
@@ -20,7 +20,7 @@ class CharacterBehaviors(Enum):
 class Character:
     x: float
     y: float
-
+    
     collider: pygame.Rect
 
     # Actions
@@ -31,6 +31,8 @@ class Character:
     behavior_type: CharacterBehaviors
 
     # Default state
+    sleep: int = 0
+    has_coll_enemy: bool = False
     vy: float = 0
     frame: float = 0
     direction: bool = True
@@ -52,3 +54,4 @@ class CharacterBehavior:
     on_left: Callable[[Character], None]
     on_right: Callable[[Character], None]
     on_start: Callable[[Character], None]
+    on_collide: Callable[[Character, bool], None]
