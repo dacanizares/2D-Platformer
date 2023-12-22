@@ -1,14 +1,20 @@
 # Graphics
 DISP_W = 600
 DISP_H = 400
+FPS = 60
 
 # Debug
 DEBUG = False
 RED = (255,0,0)
 YELLOW = (255,255,0)
 
+# Camera
+OFFSET_X = 0.4
+OFFSET_Y = 0.35
+
 # Characters
-DELTA_FRAME = 0.5 # Animation speed
+ANIM_EVERY_X_FRAMES = 2
+IDLE_ANIM_X_FRAMES = 120
 SLEEP = 60
 VY_COLLIDE = 10
 MAX_VY = 13

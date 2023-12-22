@@ -1,7 +1,7 @@
 import pygame
 import game_sdl
 from constants import *
-from game_structs import Camera, Character
+from game_structs import Camera, Character, CharacterAnims, CharacterBehaviors
 from tilemap_structs import Tilemap
 
 
@@ -31,31 +31,49 @@ def render(camera: Camera, characters: list[Character], tilemap: Tilemap):
     for character in characters:
         draw_character(character, character.x - camera.x, character.y - camera.y)
 
+def get_next_frame_update(state: CharacterAnims):
+    if state == CharacterAnims.IDLE:
+        return IDLE_ANIM_X_FRAMES
+    else:
+        return ANIM_EVERY_X_FRAMES
 
-def draw_character(character: Character, xcam, ycam):
+def draw_character(character: Character, xcam: float, ycam: float):
+    # Set direction data
     if character.direction:
         anim_index = 0
     else:
         anim_index = 1
 
-    if character.sleep:
-        sprite = character.idle[anim_index][int(character.frame)]
-        character.frame = (character.frame + DELTA_FRAME) % len(character.idle[anim_index])
-    elif not character.land:
-        if character.vy < 0:
-            sprite = character.jumping[anim_index][1]
+    # Anim states
+    last_anim_state = character.anim.state
+
+    # Set current anim state and frame
+    if not character.land:
+        character.anim.state = CharacterAnims.JUMP
+        if character.vy < 0:            
+            character.anim.frame = 0
         else:
-            sprite = character.jumping[anim_index][0]
+            character.anim.frame = 1
     else:
-        if character.right or character.left:
-            sprite = character.walking[anim_index][int(character.frame)]
-            character.frame = (character.frame + DELTA_FRAME) % len(character.walking[anim_index])                
+        if character.sleep:
+            character.anim.state = CharacterAnims.SLEEP
+        elif character.left or character.right:
+            character.anim.state = CharacterAnims.WALK
         else:
-            character.delta_frames = (character.delta_frames + 1) % 120                
-            if character.delta_frames < 90:
-                sprite = character.idle[anim_index][0]
-            else:
-                sprite = character.idle[anim_index][1]
+            character.anim.state = CharacterAnims.IDLE
+        
+        # Changed anim?
+        if character.anim.state != last_anim_state:
+            character.anim.frame = 0
+            character.anim.next_update = get_next_frame_update(character.anim.state)
+        else:
+            # Update frame and loop
+            character.anim.next_update -= 1
+            if character.anim.next_update == 0:
+                character.anim.frame = (character.anim.frame + 1) % len(character.anim.sets[character.anim.state][anim_index])
+                character.anim.next_update = get_next_frame_update(character.anim.state)
+    
+    sprite = character.anim.sets[character.anim.state][anim_index][character.anim.frame]
 
     # Center image
     xoffset = -sprite.get_width() / 2

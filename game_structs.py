@@ -2,13 +2,14 @@ import pygame
 from typing import Callable
 from dataclasses import dataclass
 from enum import Enum
+from constants import *
 
 @dataclass
 class Camera:
     x: int
     y: int
-    offset_x: float = 0.4
-    offset_y: float = 0.35
+    offset_x: float = OFFSET_X
+    offset_y: float = OFFSET_Y
     always_centered: bool = False
 
 class CharacterBehaviors(Enum):
@@ -16,31 +17,40 @@ class CharacterBehaviors(Enum):
     JUMPING_AI = 1
     BASIC_AI = 2
 
+class CharacterAnims(Enum):
+    IDLE = 0
+    WALK = 1
+    JUMP = 2
+    SLEEP = 3
+
+@dataclass
+class CharacterAnim:
+    sets: dict[CharacterAnims, list[list[pygame.Surface]]]
+    state: CharacterAnims = CharacterAnims.IDLE
+    frame: int = 0
+    next_update: int = 0
+    last_update: bool = 0
+
 @dataclass
 class Character:
     x: float
     y: float
     
-    collider: pygame.Rect
+    collider: pygame.Rect 
 
-    # Actions
-    idle: list[pygame.Surface]
-    walking: list[pygame.Surface]
-    jumping: list[pygame.Surface]
-
+    anim: CharacterAnim
     behavior_type: CharacterBehaviors
 
     # Default state
     sleep: int = 0
     has_coll_enemy: bool = False
     vy: float = 0
-    frame: float = 0
+    
     direction: bool = True
     land: bool = False
     right: bool = False
     left: bool = False
-    jump: bool  = False
-    delta_frames: bool = 0
+    jump: bool  = False    
     stop: bool = False
 
 
