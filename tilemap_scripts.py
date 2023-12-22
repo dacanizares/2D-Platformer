@@ -25,6 +25,8 @@ def load_map(path):
                 for tile_prop in tile_props:
                     if tile_prop['name'] == 'NoCollide' and tile_prop['value'] == '1':
                         tilemap.no_collision[int(tile_id) + tileset.firstgid] = True
+                    if tile_prop['name'] == 'NoPeak' and tile_prop['value'] == '1':
+                        tilemap.no_peak[int(tile_id) + tileset.firstgid] = True
 
     # Index GUIDs
     for tileset_idx in range(0, len(tilemap.tilesets)):

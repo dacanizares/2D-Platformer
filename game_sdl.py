@@ -15,8 +15,8 @@ def apply_alpha(image, colorkey):
             colorkey = image.get_at((0,0))
         image.set_colorkey(colorkey, pygame.RLEACCEL)
 
-def load_image(path, colorkey = None):
-    image = pygame.image.load(path).convert()
+def load_image(path: str, colorkey = None):    
+    image = pygame.image.load(path.strip('../')).convert()
     apply_alpha(image, colorkey)
     return image
 

@@ -10,7 +10,8 @@ class Tilemap:
     current_height: int = 0
     tilew: int = 0
     tileh: int = 0
-    no_collision = {0: True}
+    no_collision = { 0: True }
+    no_peak = { 0: True }
 
 @dataclass
 class Tile:
