@@ -48,7 +48,7 @@ def draw_character(character: Character, xcam: float, ycam: float):
     last_anim_state = character.anim.state
 
     # Set current anim state and frame
-    if not character.land:
+    if not character.land and not character.sleep:
         character.anim.state = CharacterAnims.JUMP
         if character.vy < 0:            
             character.anim.frame = 0
