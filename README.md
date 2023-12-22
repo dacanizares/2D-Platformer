@@ -12,6 +12,12 @@ A simple 2D Platformer built with PyGame.
 
 * Basic [Tiled](https://www.mapeditor.org/) support (see *tilemap_scripts.py*).
 
+* Also includes:
+
+    * Static collisions against a tile-based map and dynamic collisions between characters (see *game_scripts.py*).
+    * Side scrolling for a tile-based map with completely aligned cameras and using offsets (see *game_render.py*).
+    * Character sprite-animations updated according to entity state (see *game_render.py*).
+
 ## Instructions
 
 * Install Python *3.12.x* from https://www.python.org/

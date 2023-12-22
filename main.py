@@ -11,12 +11,13 @@ from tilemap_scripts import load_map
 
 # Game starts!
 game_sdl.start(DISP_W, DISP_H)
-sprites = load_sprites()
+sprites_player = load_sprites(True)
+sprites_computer = load_sprites(False)
 
 # Characters
-player = Character(40, 40, pygame.Rect(0,0,20,25), CharacterAnim(sprites), CharacterBehaviors.PLAYER)
-jumping_ai = Character(60, 40, pygame.Rect(0,0,20,25), CharacterAnim(sprites), CharacterBehaviors.JUMPING_AI)
-basic_ai = Character(100, 40, pygame.Rect(0,0,20,25), CharacterAnim(sprites), CharacterBehaviors.BASIC_AI)
+player = Character(40, 40, pygame.Rect(0,0,20,25), CharacterAnim(sprites_player), CharacterBehaviors.PLAYER)
+jumping_ai = Character(60, 40, pygame.Rect(0,0,20,25), CharacterAnim(sprites_computer), CharacterBehaviors.JUMPING_AI)
+basic_ai = Character(100, 40, pygame.Rect(0,0,20,25), CharacterAnim(sprites_computer), CharacterBehaviors.BASIC_AI)
 characters = [player, jumping_ai, basic_ai]
 
 # Map
