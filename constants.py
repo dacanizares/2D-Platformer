@@ -1,15 +1,26 @@
 # Graphics
 DISP_W = 600
 DISP_H = 400
+FPS = 60
 
 # Debug
 DEBUG = False
 RED = (255,0,0)
 YELLOW = (255,255,0)
-MAX_VY = 15
-VEL_X = 5
-VEL_Y = 15
-GRAVITY = 1
+
+# Camera
+OFFSET_X = 0.4
+OFFSET_Y = 0.35
+
+# Characters
+ANIM_EVERY_X_FRAMES = 2
+IDLE_ANIM_X_FRAMES = 120
+SLEEP = 60
+VY_COLLIDE = 10
+MAX_VY = 13
+VEL_X = 3
+VEL_Y = 12
+GRAVITY = 0.6
 
 # Static collisions
 MAX_DIST_COL = 500

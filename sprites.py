@@ -1,8 +1,9 @@
 import game_sdl
 import pygame
 from pygame.locals import *
+from game_structs import CharacterAnim, CharacterAnims
 
-def load_sprites():
+def load_sprites() -> dict[CharacterAnims, list[list[pygame.Surface]]]:
     sheet = game_sdl.load_image('graphics/arc2.png')
     #rects = [#pygame.Rect(514,8,24,34),
     #        pygame.Rect(550,8,30,34),
@@ -27,6 +28,9 @@ def load_sprites():
             pygame.Rect(38,4,30,36)]
     jump_right = game_sdl.load_sprites(sheet, rects, (0,0,0))
     jump_left = game_sdl.flip_sprites(jump_right)
-    return ([idle_right, idle_left],
-            [walk_right,walk_left],            
-            [jump_right, jump_left])
+    return {
+        CharacterAnims.IDLE: [idle_right, idle_left],
+        CharacterAnims.WALK: [walk_right, walk_left],
+        CharacterAnims.JUMP: [jump_right, jump_left],
+        CharacterAnims.SLEEP: [idle_right, idle_left],
+    }
