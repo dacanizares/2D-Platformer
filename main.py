@@ -24,9 +24,9 @@ tilemap = load_map('maps/map1.json')
 camera = Camera(0, 0, always_centered=False)
 
 # Music
-#pygame.mixer.init()
-#pygame.mixer.music.load("sound/hyperfun.mp3")
-#pygame.mixer.music.play(100)
+pygame.mixer.init()
+pygame.mixer.music.load("sound/hyperfun.mp3")
+pygame.mixer.music.play(100)
 
 # Gameloop
 start_characters(characters, character_behaviors)
