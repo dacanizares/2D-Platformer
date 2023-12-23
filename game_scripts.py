@@ -66,18 +66,18 @@ def update_characters(characters: list[Character], behaviors: dict, events: dict
         max_y = search_collisions(tilemap, character, bot, left, right, 0, 1)
 
         # Limit Y
-        limit = min_y * tilemap.tileh + tilemap.tileh + col.h
-        if character.y <= limit:
-            character.y = limit
-            behavior.on_peak(character)
         limit = max_y * tilemap.tileh
-
         if character.y >= limit:
             character.y = limit
             behavior.on_land(character)
         else:
             behavior.on_air(character)
 
+            limit = min_y * tilemap.tileh + tilemap.tileh + col.h
+            if character.y <= limit:
+                character.y = limit
+                behavior.on_peak(character)
+        
         # Update Collider
         character.collider = pygame.Rect(character.x, character.y, character.collider.w, character.collider.h)
 

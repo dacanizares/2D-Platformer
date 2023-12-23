@@ -69,11 +69,14 @@ def search_collisions(tilemap: Tilemap, character: Character, start, a, b, dx, d
         # Scan!
         for i in range(a, b + 1):
             # x changing
-            if dx != 0 and tilemap.current_map[i][start] not in tilemap.no_collision and tilemap.current_map[i][start] not in tilemap.no_peak:                    
+            if dx != 0 and tilemap.current_map[i][start] not in tilemap.no_collision and tilemap.current_map[i][start] not in tilemap.no_peak:   
                 return start
             # y changing
             elif dy != 0 and tilemap.current_map[start][i] not in tilemap.no_collision:
-                if tilemap.current_map[start][i] not in tilemap.no_peak or character.vy > 0 or character.land:
+                if tilemap.current_map[start][i] not in tilemap.no_peak: 
                     return start
+                else:
+                    if dy > 0 and (character.vy > 0 or character.land):
+                        return start
         # Advance!
         start += (dx + dy)

@@ -15,7 +15,7 @@ sprites_player = load_sprites(True)
 sprites_computer = load_sprites(False)
 
 # Characters
-player = Character(210, 12200, pygame.Rect(0,0,20,25), CharacterAnim(sprites_player), CharacterBehaviors.PLAYER)
+player = Character(310, 40, pygame.Rect(0,0,20,40), CharacterAnim(sprites_player), CharacterBehaviors.PLAYER)
 jumping_ai = Character(60, 40, pygame.Rect(0,0,20,25), CharacterAnim(sprites_computer), CharacterBehaviors.JUMPING_AI)
 basic_ai = Character(100, 40, pygame.Rect(0,0,20,25), CharacterAnim(sprites_computer), CharacterBehaviors.BASIC_AI)
 characters = [player]
