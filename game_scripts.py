@@ -68,8 +68,9 @@ def update_characters(characters: list[Character], behaviors: dict, events: dict
         # Limit Y
         limit = max_y * tilemap.tileh
         if character.y >= limit:
-            character.y = limit
-            behavior.on_land(character)
+            if not character.land:
+                character.y = limit
+                behavior.on_land(character)
         else:
             behavior.on_air(character)
 
