@@ -5,7 +5,7 @@ FPS = 60
 
 # Debug
 DEBUG = False
-DEBUG_COLL_BOT = True
+DEBUG_COLL_BOT = False
 RED = (255,0,0)
 YELLOW = (255,255,0)
 

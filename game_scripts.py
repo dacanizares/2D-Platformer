@@ -26,6 +26,7 @@ def update_camera(camera: Camera, focus_location: tuple):
 
 def start_characters(characters: list[Character], behaviors: dict):   
     for character in characters:
+        update_character_collider(character)
         behaviors[character.behavior_type].on_start(character)
 
 def update_character_collider(character: Character):
@@ -40,7 +41,6 @@ def update_characters(characters: list[Character], behaviors: dict, events: dict
         behavior.update(character, events)
     
         # Collider to compare with
-        update_character_collider(character)
         coll = character.collider
 
         # UPDATE X --------------------------------------
