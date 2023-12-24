@@ -1,5 +1,5 @@
 import pygame
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 @dataclass
 class Tilemap:
@@ -12,6 +12,7 @@ class Tilemap:
     tileh: int = 0
     no_collision = { 0: True }
     no_peak = { 0: True }
+    debug_rects: list[tuple[int, int]] = field(default_factory=list)
 
 @dataclass
 class Tile:

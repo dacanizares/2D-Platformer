@@ -30,6 +30,13 @@ def render(camera: Camera, characters: list[Character], tilemap: Tilemap):
                     game_sdl.debug_txt(str(i)+','+str(j), (x,y), RED)
     for character in characters:
         draw_character(character, character.x - camera.x, character.y - camera.y)
+    if DEBUG_COLL_BOT:
+        for debug_rect in tilemap.debug_rects:
+            tile_x = debug_rect[1] * tilemap.tilew
+            tile_y = debug_rect[0] * tilemap.tileh
+            game_sdl.draw_rect(pygame.Rect(tile_x - camera.x, tile_y - camera.y, tilemap.tilew, tilemap.tileh), RED)
+        tilemap.debug_rects = []
+
 
 def get_next_frame_update(state: CharacterAnims):
     if state == CharacterAnims.IDLE:

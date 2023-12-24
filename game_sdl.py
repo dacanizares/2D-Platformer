@@ -57,9 +57,9 @@ def draw_tile(tileset: Tileset, tile: Tile, xy: tuple):
                       pygame.Rect(tile.x, tile.y, tileset.tilew, tileset.tileh),
                       to_rgb(tileset.alpha_color))
 
-def draw_rect(rect):
+def draw_rect(rect: pygame.Rect, color = (255,0,0)):
     screen = pygame.display.get_surface()
-    pygame.draw.rect(screen, (255,0,0), rect)
+    pygame.draw.rect(screen, color, rect)
 
 def debug_txt(txt,xy,color):
     font = pygame.font.Font(None, 12)
