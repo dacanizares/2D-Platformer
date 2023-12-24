@@ -42,7 +42,7 @@ def project_collider_to_tilemap(character: Character, tilemap: Tilemap, tileset_
 #  4 . . . . . . 
 #
 #  It will search on the position marked with X
-def search_collisions(tilemap: Tilemap, character: Character, start, a, b, dx, dy, ignore_no_peak=False) -> tuple[int, float]:
+def search_collisions(tilemap: Tilemap, start, a, b, dx, dy, ignore_no_peak=False) -> tuple[int, float]:
     # Grant that these vars are int
     start = int(start)
     a = int(a)

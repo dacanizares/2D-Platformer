@@ -48,8 +48,8 @@ def update_characters(characters: list[Character], behaviors: dict, events: dict
         left, right, top, bot = project_collider_to_tilemap(character, tilemap)
 
         # Search for limits
-        (min_x, coll_dy) = search_collisions(tilemap, character, left, top, bot, -1 , 0)
-        (max_x, coll_dy) = search_collisions(tilemap, character, right, top, bot,  1 , 0) 
+        (min_x, coll_dy) = search_collisions(tilemap, left, top, bot, -1 , 0)
+        (max_x, coll_dy) = search_collisions(tilemap, right, top, bot,  1 , 0) 
 
         # Limit X
         limit = min_x * tilemap.tilew + tilemap.tilew + coll.w / 2
@@ -67,8 +67,8 @@ def update_characters(characters: list[Character], behaviors: dict, events: dict
         left, right, top, bot = project_collider_to_tilemap(character, tilemap)
 
         # Search for limits
-        (min_y, coll_dy) = search_collisions(tilemap, character, top, left, right, 0, -1)
-        (max_y, coll_dy) = search_collisions(tilemap, character, bot, left, right, 0, 1, character.vy > 0 or character.land)
+        (min_y, coll_dy) = search_collisions(tilemap, top, left, right, 0, -1)
+        (max_y, coll_dy) = search_collisions(tilemap, bot, left, right, 0, 1, character.vy > 0 or character.land)
 
         # Limit Y
         limit = max_y * tilemap.tileh + coll_dy
