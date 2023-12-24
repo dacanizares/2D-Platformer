@@ -62,6 +62,12 @@ def draw_rect(rect: pygame.Rect, color = (255,0,0)):
     screen = pygame.display.get_surface()
     pygame.draw.rect(screen, color, rect)
 
+def draw_rect_borders(rect: pygame.Rect, border_size=1, color = (255,0,0)):
+    draw_rect(pygame.Rect(rect.x, rect.y, rect.w, border_size), color)
+    draw_rect(pygame.Rect(rect.x, rect.y, border_size, rect.h), color)
+    draw_rect(pygame.Rect(rect.x, rect.y + rect.h, rect.w, border_size), color)
+    draw_rect(pygame.Rect(rect.x + rect.w, rect.y, border_size, rect.h), color)
+
 def debug_txt(txt,xy,color):
     font = pygame.font.Font(None, 12)
     text = font.render(txt, 1, color)
