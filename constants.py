@@ -2,9 +2,11 @@
 DISP_W = 600
 DISP_H = 400
 FPS = 60
+RENDER_CHUNKS = True
 
 # Debug
 DEBUG = False
+DEBUG_COLL_BOT = False
 RED = (255,0,0)
 YELLOW = (255,255,0)
 

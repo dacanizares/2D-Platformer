@@ -15,8 +15,8 @@ def apply_alpha(image, colorkey):
             colorkey = image.get_at((0,0))
         image.set_colorkey(colorkey, pygame.RLEACCEL)
 
-def load_image(path, colorkey = None):
-    image = pygame.image.load(path).convert()
+def load_image(path: str, colorkey = None):    
+    image = pygame.image.load(path.strip('../')).convert()
     apply_alpha(image, colorkey)
     return image
 
@@ -44,22 +44,23 @@ def draw(image: Surface, xy: tuple):
     screen = pygame.display.get_surface()
     screen.blit(image, xy)
 
-
-def draw_from_tileset(tileset: Tileset, xy: tuple, rect: pygame.Rect, colorkey=None):   
-    screen = pygame.display.get_surface()
+def draw_from_tileset(tileset: Tileset, xy: tuple, rect: pygame.Rect, colorkey=None, surface: pygame.Surface = None):   
+    if (surface is None):
+        surface = pygame.display.get_surface()
     image = pygame.Surface(rect.size)
     image.blit(tileset.sheet, (0, 0), rect)
     apply_alpha(image, colorkey)
-    screen.blit(image, xy)
+    surface.blit(image, xy)
 
-def draw_tile(tileset: Tileset, tile: Tile, xy: tuple):
+def draw_tile(tileset: Tileset, tile: Tile, xy: tuple, surface: pygame.Surface = None):
     draw_from_tileset(tileset, xy,
                       pygame.Rect(tile.x, tile.y, tileset.tilew, tileset.tileh),
-                      to_rgb(tileset.alpha_color))
+                      to_rgb(tileset.alpha_color),
+                      surface)
 
-def draw_rect(rect):
+def draw_rect(rect: pygame.Rect, color = (255,0,0)):
     screen = pygame.display.get_surface()
-    pygame.draw.rect(screen, (255,0,0), rect)
+    pygame.draw.rect(screen, color, rect)
 
 def debug_txt(txt,xy,color):
     font = pygame.font.Font(None, 12)

@@ -26,7 +26,11 @@ def update_camera(camera: Camera, focus_location: tuple):
 
 def start_characters(characters: list[Character], behaviors: dict):   
     for character in characters:
+        update_character_collider(character)
         behaviors[character.behavior_type].on_start(character)
+
+def update_character_collider(character: Character):
+    character.collider = pygame.Rect(character.x, character.y, character.w, character.h)
 
 # Updates entities and colliding events
 # events: pygame events to send to entities
@@ -37,49 +41,47 @@ def update_characters(characters: list[Character], behaviors: dict, events: dict
         behavior.update(character, events)
     
         # Collider to compare with
-        col = character.collider
+        coll = character.collider
 
         # UPDATE X --------------------------------------
-        left, right, top, bot = project_collider_to_tilemap(col, tilemap)
+        left, right, top, bot = project_collider_to_tilemap(coll, tilemap)
 
         # Search for limits
-        min_x = search_collisions(tilemap, left, top, bot, -1 , 0)
-        max_x = search_collisions(tilemap, right, top, bot,  1 , 0) 
+        min_x = search_collisions(tilemap, character, left, top, bot, -1 , 0)
+        max_x = search_collisions(tilemap, character, right, top, bot,  1 , 0) 
 
         # Limit X
-        limit = min_x * tilemap.tilew + tilemap.tilew + col.w / 2
+        limit = min_x * tilemap.tilew + tilemap.tilew + coll.w / 2
         if character.x <= limit:
             character.x = limit
             behavior.on_left(character)
-        limit = max_x * tilemap.tilew - col.w / 2        
+        limit = max_x * tilemap.tilew - coll.w / 2        
         if character.x >= limit:
             character.x = limit      
             behavior.on_right(character)
         # Update collider (just X axis)
-        col.x = character.x
+        coll.x = character.x
 
         # UPDATE Y ------------------------------------
-        left, right, top, bot = project_collider_to_tilemap(col, tilemap)
+        left, right, top, bot = project_collider_to_tilemap(coll, tilemap)
 
         # Search for limits
-        min_y = search_collisions(tilemap, top, left, right, 0, -1)
-        max_y = search_collisions(tilemap, bot, left, right, 0, 1)
+        min_y = search_collisions(tilemap, character, top, left, right, 0, -1)
+        max_y = search_collisions(tilemap, character, bot, left, right, 0, 1, character.vy > 0 or character.land)
 
         # Limit Y
-        limit = min_y * tilemap.tileh + tilemap.tileh + col.h
-        if character.y <= limit:
-            character.y = limit
-            behavior.on_peak(character)
         limit = max_y * tilemap.tileh
-
         if character.y >= limit:
             character.y = limit
             behavior.on_land(character)
         else:
             behavior.on_air(character)
 
-        # Update Collider
-        character.collider = pygame.Rect(character.x, character.y, character.collider.w, character.collider.h)
+            limit = min_y * tilemap.tileh + tilemap.tileh + coll.h
+            if character.y <= limit:
+                character.y = limit
+                behavior.on_peak(character)
+        update_character_collider(character)        
 
     # Dynamic collisions
     for character_a_idx in range(0, len(characters) - 1):

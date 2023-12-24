@@ -16,7 +16,7 @@ def project_collider_to_tilemap(col: pygame.Rect, tilemap: Tilemap, tileset_idx:
     right = (col.x + col.w / 2 - 1) / tile_w
     top = (col.y - col.h + 1) / tile_h
     bot = (col.y - 1) / tile_h
-    return left, right, top, bot
+    return int(left), int(right), int(top), int(bot)
 
 
 # Search for static objects to collide with
@@ -40,7 +40,7 @@ def project_collider_to_tilemap(col: pygame.Rect, tilemap: Tilemap, tileset_idx:
 #  4 . . . . . . 
 #
 #  It will search on the position marked with X
-def search_collisions(tilemap: Tilemap, start, a, b, dx, dy):
+def search_collisions(tilemap: Tilemap, character: Character, start, a, b, dx, dy, ignore_no_peak=False):
     # Grant that these vars are int
     start = int(start)
     a = int(a)
@@ -62,17 +62,24 @@ def search_collisions(tilemap: Tilemap, start, a, b, dx, dy):
             
     # Search for static objects!
     while True:
+        # Advance!
+        start += (dx + dy)
+        
         # If we reached the limit
-        if start == limit:
+        if start == limit or start < 0:
             return start
 
         # Scan!
         for i in range(a, b + 1):
             # x changing
-            if dx != 0 and tilemap.current_map[i][start] not in tilemap.no_collision:                    
-                return start
+            if dx != 0:
+                if tilemap.current_map[i][start] not in tilemap.no_collision and tilemap.current_map[i][start] not in tilemap.no_peak:   
+                    return start
             # y changing
-            elif dy != 0 and tilemap.current_map[start][i] not in tilemap.no_collision:
-                return start
-        # Advance!
-        start += (dx + dy)
+            elif dy != 0:
+                if dy > 0 and DEBUG_COLL_BOT:
+                    tilemap.debug_rects.append((start, i))
+                if tilemap.current_map[start][i] not in tilemap.no_collision:                    
+                    if ignore_no_peak or tilemap.current_map[start][i] not in tilemap.no_peak: 
+                        return start
+        
