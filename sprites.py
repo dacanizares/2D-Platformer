@@ -1,7 +1,7 @@
 import game_sdl
 import pygame
 from pygame.locals import *
-from game_structs import CharacterAnim, CharacterAnims
+from game_structs import CharacterAnims
 
 def get_walk_rects(player: bool) -> list[pygame.Rect]:
     if player:

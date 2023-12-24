@@ -14,15 +14,10 @@ game_sdl.start(DISP_W, DISP_H)
 sprites_player = load_sprites(True)
 sprites_computer = load_sprites(False)
 
-# Characters
-player = Character(40, 40, 20, 40, CharacterAnim(sprites_player), CharacterBehaviors.PLAYER)
-jumping_ai = Character(60, 40, 20, 25, CharacterAnim(sprites_computer), CharacterBehaviors.JUMPING_AI)
-basic_ai = Character(100, 40, 20, 25, CharacterAnim(sprites_computer), CharacterBehaviors.BASIC_AI)
-characters = [player, jumping_ai, basic_ai]
-
 # Map
 tilemap = load_map('maps/map1.json')
 process_tilemap(tilemap)
+(characters, player) = spawn_characters(tilemap, sprites_player, sprites_computer)
 camera = Camera(0, 0, always_centered=False)
 
 # Music

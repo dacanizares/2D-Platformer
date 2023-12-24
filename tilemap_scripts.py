@@ -1,6 +1,7 @@
 import game_sdl
 import json
-from tilemap_structs import Tile, Tilemap, Tileset
+from game_structs import CharacterBehaviors
+from tilemap_structs import Tile, Tilemap, TilemapCharacters, Tileset
 
 def load_map(path):
     json_data = open(path)
@@ -48,14 +49,28 @@ def load_map(path):
     
     tilemap.current_map = []
 
-    # NOTE: We only support a single layered map.
-    map_data = data['layers'][0]['data']
+    layer_terrain = 0
+    layer_characters = 1
+    map_data = data['layers'][layer_terrain]['data']
     for i in range(tilemap.current_height):
         row = []
         for j in range(tilemap.current_width):
             row.append(map_data[i * tilemap.current_width + j])    
         tilemap.current_map.append(row)
 
+    char_data = data['layers'][layer_characters]['objects']
+    for char in char_data:
+        char_type = char['type'].upper()
+        char_x = int(char['x'])
+        char_y = int(char['y'])
+        if char_type == 'PLAYER':
+            char_type = CharacterBehaviors.PLAYER
+        elif char_type == 'JUMPINGAI':
+            char_type = CharacterBehaviors.JUMPING_AI
+        else:
+            char_type = CharacterBehaviors.BASIC_AI
+        tilemap.characters_to_spawn.append(TilemapCharacters(char_type, char_x, char_y))
+    
     json_data.close()
 
     return tilemap

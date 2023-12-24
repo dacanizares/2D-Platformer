@@ -5,6 +5,20 @@ from collision_scripts import *
 from tilemap_structs import Tilemap
 
 
+def spawn_characters(tilemap: Tilemap, sprites_player, sprites_computer) -> tuple[list[Character], Character]:
+    characters: list[Character] = []
+    player: Character = None
+    for to_spawn in tilemap.characters_to_spawn:
+        if to_spawn.characterBehavior == CharacterBehaviors.PLAYER:
+            sprites = sprites_player
+        else:
+            sprites = sprites_computer
+        character = Character(to_spawn.x, to_spawn.y, CHARACTER_COLL_W, CHARACTER_COLL_H, CharacterAnim(sprites), to_spawn.characterBehavior)
+        characters.append(character)
+        if to_spawn.characterBehavior == CharacterBehaviors.PLAYER:
+            player = character
+    return (characters, player)
+
 def update_camera(camera: Camera, focus_location: tuple):
     if camera.always_centered:
         camera.x = focus_location.x - DISP_W / 2

@@ -32,9 +32,56 @@
          "width":40,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":2,
+         "name":"Characters",
+         "objects":[
+                {
+                 "gid":397,
+                 "height":40,
+                 "id":9,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Player",
+                 "visible":true,
+                 "width":32,
+                 "x":69.3333,
+                 "y":380.667
+                }, 
+                {
+                 "gid":417,
+                 "height":40,
+                 "id":10,
+                 "name":"",
+                 "rotation":0,
+                 "type":"BasicAI",
+                 "visible":true,
+                 "width":32,
+                 "x":469.333333333333,
+                 "y":428.666666666667
+                }, 
+                {
+                 "gid":437,
+                 "height":40,
+                 "id":11,
+                 "name":"",
+                 "rotation":0,
+                 "type":"JumpingAI",
+                 "visible":true,
+                 "width":32,
+                 "x":448,
+                 "y":212.666666666667
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":2,
- "nextobjectid":1,
+ "nextlayerid":3,
+ "nextobjectid":12,
  "orientation":"orthogonal",
  "renderorder":"left-up",
  "tiledversion":"1.10.2",
@@ -1292,6 +1339,20 @@
                          "value":"1"
                         }]
                 }],
+         "tilewidth":32,
+         "transparentcolor":"#000000"
+        }, 
+        {
+         "columns":20,
+         "firstgid":397,
+         "image":"..\/graphics\/arc2.png",
+         "imageheight":400,
+         "imagewidth":640,
+         "margin":0,
+         "name":"arc2",
+         "spacing":0,
+         "tilecount":200,
+         "tileheight":40,
          "tilewidth":32,
          "transparentcolor":"#000000"
         }],
