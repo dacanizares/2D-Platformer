@@ -30,7 +30,7 @@ def start_characters(characters: list[Character], behaviors: dict):
         behaviors[character.behavior_type].on_start(character)
 
 def update_character_collider(character: Character):
-    character.collider = pygame.Rect(character.x, character.y, character.collider.w, character.collider.h)
+    character.collider = pygame.Rect(character.x, character.y, character.w, character.h)
 
 # Updates entities and colliding events
 # events: pygame events to send to entities

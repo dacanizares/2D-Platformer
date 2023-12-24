@@ -33,15 +33,17 @@ class CharacterAnim:
 
 @dataclass
 class Character:
-    x: float
-    y: float
-    
-    collider: pygame.Rect 
+    x: int
+    y: int
+    w: int
+    h: int
+    w: int   
 
     anim: CharacterAnim
     behavior_type: CharacterBehaviors
 
     # Default state
+    collider: pygame.Rect = None
     sleep: int = 0
     has_coll_enemy: bool = False
     vy: float = 0
