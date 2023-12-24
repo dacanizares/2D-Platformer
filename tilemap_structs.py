@@ -11,7 +11,8 @@ class Tilemap:
     tilew: int = 0
     tileh: int = 0
     no_collision = { 0: True }
-    no_peak = { 0: True }
+    no_peak = { }
+    coll_dy = { }
     debug_rects: list[tuple[int, int]] = field(default_factory=list)
 
 @dataclass

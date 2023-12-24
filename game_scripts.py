@@ -26,11 +26,12 @@ def update_camera(camera: Camera, focus_location: tuple):
 
 def start_characters(characters: list[Character], behaviors: dict):   
     for character in characters:
-        update_character_collider(character)
+        update_character_collider(character, 0)
         behaviors[character.behavior_type].on_start(character)
 
-def update_character_collider(character: Character):
+def update_character_collider(character: Character, coll_dy: int):
     character.collider = pygame.Rect(character.x, character.y, character.w, character.h)
+    character.coll_dy = coll_dy
 
 # Updates entities and colliding events
 # events: pygame events to send to entities
@@ -44,11 +45,11 @@ def update_characters(characters: list[Character], behaviors: dict, events: dict
         coll = character.collider
 
         # UPDATE X --------------------------------------
-        left, right, top, bot = project_collider_to_tilemap(coll, tilemap)
+        left, right, top, bot = project_collider_to_tilemap(character, tilemap)
 
         # Search for limits
-        min_x = search_collisions(tilemap, character, left, top, bot, -1 , 0)
-        max_x = search_collisions(tilemap, character, right, top, bot,  1 , 0) 
+        (min_x, coll_dy) = search_collisions(tilemap, character, left, top, bot, -1 , 0)
+        (max_x, coll_dy) = search_collisions(tilemap, character, right, top, bot,  1 , 0) 
 
         # Limit X
         limit = min_x * tilemap.tilew + tilemap.tilew + coll.w / 2
@@ -63,14 +64,14 @@ def update_characters(characters: list[Character], behaviors: dict, events: dict
         coll.x = character.x
 
         # UPDATE Y ------------------------------------
-        left, right, top, bot = project_collider_to_tilemap(coll, tilemap)
+        left, right, top, bot = project_collider_to_tilemap(character, tilemap)
 
         # Search for limits
-        min_y = search_collisions(tilemap, character, top, left, right, 0, -1)
-        max_y = search_collisions(tilemap, character, bot, left, right, 0, 1, character.vy > 0 or character.land)
+        (min_y, coll_dy) = search_collisions(tilemap, character, top, left, right, 0, -1)
+        (max_y, coll_dy) = search_collisions(tilemap, character, bot, left, right, 0, 1, character.vy > 0 or character.land)
 
         # Limit Y
-        limit = max_y * tilemap.tileh
+        limit = max_y * tilemap.tileh + coll_dy
         if character.y >= limit:
             character.y = limit
             behavior.on_land(character)
@@ -81,7 +82,7 @@ def update_characters(characters: list[Character], behaviors: dict, events: dict
             if character.y <= limit:
                 character.y = limit
                 behavior.on_peak(character)
-        update_character_collider(character)        
+        update_character_collider(character, coll_dy)        
 
     # Dynamic collisions
     for character_a_idx in range(0, len(characters) - 1):

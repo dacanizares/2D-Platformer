@@ -27,6 +27,8 @@ def load_map(path):
                         tilemap.no_collision[int(tile_id) + tileset.firstgid] = True
                     if tile_prop['name'] == 'NoPeak' and tile_prop['value'] == '1':
                         tilemap.no_peak[int(tile_id) + tileset.firstgid] = True
+                    if tile_prop['name'] == 'CollDy':
+                        tilemap.coll_dy[int(tile_id) + tileset.firstgid] = int(tile_prop['value'])
 
     # Index GUIDs
     for tileset_idx in range(0, len(tilemap.tilesets)):
@@ -58,3 +60,8 @@ def load_map(path):
 
     return tilemap
 
+def get_coll_dy(tilemap: Tilemap, tile_id: int) -> int:
+    if tile_id not in tilemap.coll_dy:
+        return 0
+    else:
+        return tilemap.coll_dy[tile_id]
