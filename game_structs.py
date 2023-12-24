@@ -44,6 +44,7 @@ class Character:
 
     # Default state
     collider: pygame.Rect = None
+    coll_dy: int = 0
     sleep: int = 0
     has_coll_enemy: bool = False
     vy: float = 0

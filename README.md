@@ -12,7 +12,7 @@ A simple 2D Platformer built with PyGame.
 
 * Map drawing using chunks (groups of tiles instead of indidual ones) to improve software rendering performance (see *game_render.py*).
 
-* Basic [Tiled](https://www.mapeditor.org/) support (see *tilemap_scripts.py*).
+* Custom [Tiled](https://www.mapeditor.org/) support including character spawning (see *tilemap_scripts.py*).
 
 * Also includes:
 

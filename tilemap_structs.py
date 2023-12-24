@@ -1,5 +1,12 @@
 import pygame
 from dataclasses import dataclass, field
+from game_structs import CharacterBehaviors
+
+@dataclass
+class TilemapCharacters:
+    characterBehavior: CharacterBehaviors
+    x: int
+    y: int
 
 @dataclass
 class Tilemap:
@@ -10,8 +17,10 @@ class Tilemap:
     current_height: int = 0
     tilew: int = 0
     tileh: int = 0
+    characters_to_spawn: list[TilemapCharacters] = field(default_factory=list)
     no_collision = { 0: True }
-    no_peak = { 0: True }
+    no_peak = { }
+    coll_dy = { }
     debug_rects: list[tuple[int, int]] = field(default_factory=list)
 
 @dataclass

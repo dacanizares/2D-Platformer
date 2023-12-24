@@ -83,6 +83,8 @@ def render(camera: Camera, characters: list[Character], tilemap: Tilemap):
             chunk_x = chunk_coord[0] * chunk_dim[0]
             chunk_y = chunk_coord[1] * chunk_dim[1]
             screen.blit(chunk, (chunk_x - camera.x, chunk_y - camera.y))
+            if DEBUG_CHUNKS:
+                game_sdl.draw_rect_borders(pygame.Rect(chunk_x - camera.x, chunk_y - camera.y, chunk_dim[0], chunk_dim[1]), 1, RED)
     
     # Render Characters
     for character in characters:

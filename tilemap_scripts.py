@@ -1,6 +1,7 @@
 import game_sdl
 import json
-from tilemap_structs import Tile, Tilemap, Tileset
+from game_structs import CharacterBehaviors
+from tilemap_structs import Tile, Tilemap, TilemapCharacters, Tileset
 
 def load_map(path):
     json_data = open(path)
@@ -27,6 +28,8 @@ def load_map(path):
                         tilemap.no_collision[int(tile_id) + tileset.firstgid] = True
                     if tile_prop['name'] == 'NoPeak' and tile_prop['value'] == '1':
                         tilemap.no_peak[int(tile_id) + tileset.firstgid] = True
+                    if tile_prop['name'] == 'CollDy':
+                        tilemap.coll_dy[int(tile_id) + tileset.firstgid] = int(tile_prop['value'])
 
     # Index GUIDs
     for tileset_idx in range(0, len(tilemap.tilesets)):
@@ -46,15 +49,34 @@ def load_map(path):
     
     tilemap.current_map = []
 
-    # NOTE: We only support a single layered map.
-    map_data = data['layers'][0]['data']
+    layer_terrain = 0
+    layer_characters = 1
+    map_data = data['layers'][layer_terrain]['data']
     for i in range(tilemap.current_height):
         row = []
         for j in range(tilemap.current_width):
             row.append(map_data[i * tilemap.current_width + j])    
         tilemap.current_map.append(row)
 
+    char_data = data['layers'][layer_characters]['objects']
+    for char in char_data:
+        char_type = char['type'].upper()
+        char_x = int(char['x'])
+        char_y = int(char['y'])
+        if char_type == 'PLAYER':
+            char_type = CharacterBehaviors.PLAYER
+        elif char_type == 'JUMPINGAI':
+            char_type = CharacterBehaviors.JUMPING_AI
+        else:
+            char_type = CharacterBehaviors.BASIC_AI
+        tilemap.characters_to_spawn.append(TilemapCharacters(char_type, char_x, char_y))
+    
     json_data.close()
 
     return tilemap
 
+def get_coll_dy(tilemap: Tilemap, tile_id: int) -> int:
+    if tile_id not in tilemap.coll_dy:
+        return 0
+    else:
+        return tilemap.coll_dy[tile_id]
