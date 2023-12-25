@@ -25,7 +25,7 @@ def update_character(character: Character, events: dict):
             character.vy = -VEL_Y
             character.land = False
 
-    character.y += character.vy
+    character.y = int(character.y + character.vy)
 
 def update_player(player: Character, events: dict):
     if pygame.K_RIGHT in events:

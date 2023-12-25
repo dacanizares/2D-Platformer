@@ -21,8 +21,8 @@ def spawn_characters(tilemap: Tilemap, sprites_player, sprites_computer) -> tupl
 
 def update_camera(camera: Camera, focus_location: tuple):
     if camera.always_centered:
-        camera.x = focus_location.x - DISP_W / 2
-        camera.y = focus_location.y - DISP_H * 3 / 4
+        camera.x = int(focus_location.x - DISP_W / 2)
+        camera.y = int(focus_location.y - DISP_H * 3 / 4)
     else:
         limit_x = int(camera.offset_x * DISP_W)
 

@@ -7,7 +7,7 @@ RENDER_CHUNKS = True
 # Debug
 DEBUG = False
 DEBUG_COLL_BOT = False
-DEBUG_CHUNKS = True
+DEBUG_CHUNKS = False
 RED = (255,0,0)
 YELLOW = (255,255,0)
 
