@@ -8,6 +8,7 @@ RENDER_CHUNKS = True
 DEBUG = False
 DEBUG_COLL_BOT = False
 DEBUG_CHUNKS = False
+DEBUG_FPS = False
 RED = (255,0,0)
 YELLOW = (255,255,0)
 
