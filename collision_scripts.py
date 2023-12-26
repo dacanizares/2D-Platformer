@@ -63,12 +63,13 @@ def search_collisions(tilemap: Tilemap, start, a, b, dx, dy, ignore_no_peak=Fals
         limit = tilemap.current_height
             
     # Search for static objects!
+    dist = 0
     while True:
-        # Advance!
+        dist += 1
         start += (dx + dy)
         
         # If we reached the limit
-        if start == limit or start < 0:
+        if start == limit or dist >= MAX_DIST_COL or start < 0:
             return (start, 0)
 
         # Scan!
