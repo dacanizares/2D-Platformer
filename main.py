@@ -38,6 +38,7 @@ while True:
     update_characters(characters, character_behaviors, events, tilemap)
     update_camera(camera, player)
     render(camera, characters, tilemap)
-    game_sdl.debug_txt('FPS: '+str(clock.get_fps())[:4], (540,380),RED)  
+    if DEBUG_FPS:
+        game_sdl.debug_txt('FPS: '+str(clock.get_fps())[:4], (540,380),RED)  
     game_sdl.update()
     clock.tick(FPS)
