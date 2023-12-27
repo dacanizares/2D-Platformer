@@ -6,8 +6,8 @@ RENDER_CHUNKS = True
 
 # Debug
 DEBUG = False
-DEBUG_COLL_BOT = False
-DEBUG_CHUNKS = False
+DEBUG_COLL_BOT = True
+DEBUG_CHUNKS = True
 DEBUG_FPS = False
 RED = (255,0,0)
 YELLOW = (255,255,0)

@@ -2,7 +2,7 @@
 
 A simple 2D Platformer built with PyGame.
 
-![2d platformer pygame](.docs/screenshot.png)
+![2d platformer pygame](.docs/screenshot-2.png)
 
 ## Highlights
 
@@ -11,6 +11,8 @@ A simple 2D Platformer built with PyGame.
 * Easy to extend and create custom behaviors (see *characters.py*).
 
 * Map drawing using chunks (groups of tiles instead of indidual ones) to improve software rendering performance (see *game_render.py*).
+
+  ![2d platformer pygame chunks debug tools](.docs/screenshot-3.png)
 
 * Custom [Tiled](https://www.mapeditor.org/) support including character spawning (see *tilemap_scripts.py*).
 
