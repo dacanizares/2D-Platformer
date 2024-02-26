@@ -6,13 +6,13 @@ def start(w,h):
     print('One second, we are awakening the character.')
     pygame.init()
     flags = DOUBLEBUF
-    pygame.display.set_mode((w*2, h*2), flags)
+    pygame.display.set_mode((w * 2, h * 2), flags)
     print('Lets go!')
 
 def apply_alpha(image, colorkey):
     if colorkey is not None:
-        if colorkey is -1:
-            colorkey = image.get_at((0,0))
+        if colorkey == -1:
+            colorkey = image.get_at((0, 0))
         image.set_colorkey(colorkey, pygame.RLEACCEL)
 
 def load_image(path: str, colorkey = None):    
@@ -20,14 +20,14 @@ def load_image(path: str, colorkey = None):
     apply_alpha(image, colorkey)
     return image
 
-def load_sprite(sheet, rectangle, colorkey = (0,0,0)):    
+def load_sprite(sheet, rectangle, colorkey = (0, 0, 0)):    
     rect = pygame.Rect(rectangle)
     image = pygame.Surface(rect.size).convert()
     image.blit(sheet, (0, 0), rect)
     apply_alpha(image, colorkey)
     return image
      
-def load_sprites(sheet, rects, colorkey = (0,0,0)):
+def load_sprites(sheet, rects, colorkey = (0, 0, 0)):
     return [load_sprite(sheet, rect, colorkey) for rect in rects]
 
 def flip_sprites(sprites):
@@ -38,7 +38,7 @@ def clear():
     background = pygame.Surface(screen.get_size())
     background = background.convert()
     background.fill((0, 0, 0))
-    screen.blit(background, (0,0))
+    screen.blit(background, (0, 0))
 
 def draw(image: Surface, xy: tuple):
     screen = pygame.display.get_surface()
@@ -58,17 +58,17 @@ def draw_tile(tileset: Tileset, tile: Tile, xy: tuple, surface: pygame.Surface =
                       to_rgb(tileset.alpha_color),
                       surface)
 
-def draw_rect(rect: pygame.Rect, color = (255,0,0)):
+def draw_rect(rect: pygame.Rect, color = (255, 0, 0)):
     screen = pygame.display.get_surface()
     pygame.draw.rect(screen, color, rect)
 
-def draw_rect_borders(rect: pygame.Rect, border_size=1, color = (255,0,0)):
+def draw_rect_borders(rect: pygame.Rect, border_size=1, color = (255, 0, 0)):
     draw_rect(pygame.Rect(rect.x, rect.y, rect.w, border_size), color)
     draw_rect(pygame.Rect(rect.x, rect.y, border_size, rect.h), color)
     draw_rect(pygame.Rect(rect.x, rect.y + rect.h, rect.w, border_size), color)
     draw_rect(pygame.Rect(rect.x + rect.w, rect.y, border_size, rect.h), color)
 
-def debug_txt(txt,xy,color):
+def debug_txt(txt, xy, color):
     font = pygame.font.Font(None, 12)
     text = font.render(txt, 1, color)
     screen = pygame.display.get_surface()
@@ -77,7 +77,7 @@ def debug_txt(txt,xy,color):
 
 def update():
     screen = pygame.display.get_surface()
-    screen.blit(pygame.transform.scale2x(screen), (0,0))
+    screen.blit(pygame.transform.scale2x(screen), (0, 0))
     pygame.display.flip()
 
 def get_events():
@@ -99,4 +99,4 @@ def clock():
 
 def to_rgb(color: str):
     hex_value = color.lstrip('#')
-    return tuple(int(hex_value[i:i+2], 16) for i in (0, 2, 4))
+    return tuple(int(hex_value[i : i + 2], 16) for i in (0, 2, 4))
