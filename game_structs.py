@@ -37,7 +37,6 @@ class Character:
     y: int
     w: int
     h: int
-    w: int   
 
     anim: CharacterAnim
     behavior_type: CharacterBehaviors
@@ -55,7 +54,6 @@ class Character:
     left: bool = False
     jump: bool  = False    
     stop: bool = False
-
 
 @dataclass
 class CharacterBehavior:
