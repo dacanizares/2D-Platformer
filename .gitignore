@@ -56,4 +56,4 @@ target/
 # VS
 *.suo
 *.user 
-/bin
+bin/
