@@ -156,5 +156,22 @@ void render(const GameCamera *camera, Character *characters, int count, const Ti
     for (int i = 0; i < count; ++i) {
         draw_character(&characters[i], characters[i].x - camera->x, characters[i].y - camera->y);
     }
+#if DEBUG_VELOCITY
+    for (int i = 0; i < count; ++i) {
+        const Character *character = &characters[i];
+        if (character->behavior_type != CHARACTER_PLAYER) continue;
+        DrawRectangle(5, 5, 245, 52, Fade(BLACK, 0.75f));
+        DrawText(TextFormat("PLAYER pos: %.1f, %.1f", character->x, character->y),
+                 10, 10, 10, LIME);
+        DrawText(TextFormat("prev: %.1f, %.1f  d/frame: %.1f, %.1f",
+                            character->previous_x, character->previous_y,
+                            character->frame_dx, character->frame_dy),
+                 10, 25, 10, LIME);
+        DrawText(TextFormat("velocity: vx %.1f  vy %.1f px/frame",
+                            character->frame_dx, character->frame_dy),
+                 10, 40, 10, LIME);
+        break;
+    }
+#endif
     if (DEBUG_FPS) DrawText(TextFormat("FPS: %d", GetFPS()), DISP_W - 65, DISP_H - 18, 10, RED);
 }
