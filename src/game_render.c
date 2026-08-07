@@ -1,12 +1,76 @@
 #include "game_render.h"
 
+#include <stdlib.h>
+
 #include "constants.h"
 #include "game_sdl.h"
 
-void process_tilemap(const Tilemap *tilemap) {
+#if RENDER_CHUNKS && RENDER_BACKEND == RENDER_BACKEND_GPU
+static void draw_tile_at(const Tilemap *map, int tile_id, int x, int y) {
+    if (tile_id <= 0 || tile_id >= map->gindex_count) return;
+    const Tile *tile = &map->gindex[tile_id];
+    const Tileset *set = &map->tilesets[tile->tileset_idx];
+    Rectangle source = {(float)tile->x, (float)tile->y,
+                       (float)set->tilew, (float)set->tileh};
+    DrawTextureRec(set->sheet, source, (Vector2){(float)x, (float)y}, WHITE);
+}
+#endif
+
+void process_tilemap(Tilemap *tilemap) {
+#if RENDER_CHUNKS
+    tilemap->chunk_count = ((tilemap->current_width + CHUNK_SIZE - 1) / CHUNK_SIZE) *
+                           ((tilemap->current_height + CHUNK_SIZE - 1) / CHUNK_SIZE);
+    tilemap->chunks = calloc((size_t)tilemap->chunk_count, sizeof(*tilemap->chunks));
+    if (!tilemap->chunks) return;
+
+    int index = 0;
+    for (int cy = 0; cy < tilemap->current_height; cy += CHUNK_SIZE) {
+        for (int cx = 0; cx < tilemap->current_width; cx += CHUNK_SIZE) {
+            TilemapChunk *chunk = &tilemap->chunks[index++];
+            chunk->x = cx;
+            chunk->y = cy;
+            chunk->width = (tilemap->current_width - cx < CHUNK_SIZE ?
+                            tilemap->current_width - cx : CHUNK_SIZE) * tilemap->tilew;
+            chunk->height = (tilemap->current_height - cy < CHUNK_SIZE ?
+                             tilemap->current_height - cy : CHUNK_SIZE) * tilemap->tileh;
+
+#if RENDER_BACKEND == RENDER_BACKEND_SOFTWARE
+            Image image = GenImageColor(chunk->width, chunk->height, BLANK);
+            if (!IsImageValid(image)) continue;
+            for (int row = cy; row < cy + chunk->height / tilemap->tileh; ++row) {
+                for (int col = cx; col < cx + chunk->width / tilemap->tilew; ++col) {
+                    int tile_id = tilemap->current_map[row * tilemap->current_width + col];
+                    if (tile_id <= 0 || tile_id >= tilemap->gindex_count) continue;
+                    const Tile *tile = &tilemap->gindex[tile_id];
+                    const Tileset *set = &tilemap->tilesets[tile->tileset_idx];
+                    ImageDraw(&image, set->image,
+                              (Rectangle){(float)tile->x, (float)tile->y,
+                                          (float)set->tilew, (float)set->tileh},
+                              (Rectangle){(float)((col - cx) * tilemap->tilew),
+                                          (float)((row - cy) * tilemap->tileh),
+                                          (float)set->tilew, (float)set->tileh}, WHITE);
+                }
+            }
+            chunk->texture = LoadTextureFromImage(image);
+            UnloadImage(image);
+#else
+            RenderTexture2D target = LoadRenderTexture(chunk->width, chunk->height);
+            if (!IsRenderTextureValid(target)) continue;
+            BeginTextureMode(target);
+            ClearBackground(BLANK);
+            for (int row = cy; row < cy + chunk->height / tilemap->tileh; ++row)
+                for (int col = cx; col < cx + chunk->width / tilemap->tilew; ++col)
+                    draw_tile_at(tilemap, tilemap->current_map[row * tilemap->current_width + col],
+                                 (col - cx) * tilemap->tilew, (row - cy) * tilemap->tileh);
+            EndTextureMode();
+            chunk->target = target;
+            chunk->texture = target.texture;
+#endif
+        }
+    }
+#else
     (void)tilemap;
-    /* Render tilemap chunks. raylib batches visible tiles on the GPU, so no
-       software chunk cache is needed. */
+#endif
 }
 
 static int get_next_frame_update(CharacterAnimState state) {
@@ -54,6 +118,21 @@ static void draw_character(Character *character, float x, float y) {
 }
 
 void render(const GameCamera *camera, Character *characters, int count, const Tilemap *map) {
+#if RENDER_CHUNKS
+    for (int i = 0; i < map->chunk_count; ++i) {
+        const TilemapChunk *chunk = &map->chunks[i];
+        if (!IsTextureValid(chunk->texture)) continue;
+        Rectangle source = {0, 0, (float)chunk->texture.width, (float)chunk->texture.height};
+#if RENDER_BACKEND == RENDER_BACKEND_GPU
+        source.height = -source.height;
+#endif
+        DrawTexturePro(chunk->texture, source,
+                       (Rectangle){(float)(chunk->x * map->tilew) - camera->x,
+                                   (float)(chunk->y * map->tileh) - camera->y,
+                                   (float)chunk->width, (float)chunk->height},
+                       (Vector2){0}, 0, WHITE);
+    }
+#else
     int start_x = (int)((camera->x - 1.0f) / (float)map->tilew);
     int start_y = (int)((camera->y - 1.0f) / (float)map->tileh);
     int end_x = (int)((camera->x + (float)DISP_W + 1.0f) / (float)map->tilew);
@@ -73,6 +152,7 @@ void render(const GameCamera *camera, Character *characters, int count, const Ti
                       (float)(row * map->tileh) - camera->y);
         }
     }
+#endif
     for (int i = 0; i < count; ++i) {
         draw_character(&characters[i], characters[i].x - camera->x, characters[i].y - camera->y);
     }

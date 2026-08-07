@@ -7,7 +7,14 @@
 #define FPS 60
 
 /* Debug and rendering options. */
+#ifndef RENDER_CHUNKS
 #define RENDER_CHUNKS 1
+#endif
+#define RENDER_BACKEND_GPU 0
+#define RENDER_BACKEND_SOFTWARE 1
+#ifndef RENDER_BACKEND
+#define RENDER_BACKEND RENDER_BACKEND_SOFTWARE
+#endif
 #define DEBUG_DRAW 0
 #define DEBUG_COLL_BOT 0
 #define DEBUG_CHUNKS 0

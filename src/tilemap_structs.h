@@ -29,8 +29,18 @@ typedef struct Tileset {
     int spacing;
     int firstgid;
     Color alpha_color;
+    Image image;
     Texture2D sheet;
 } Tileset;
+
+typedef struct TilemapChunk {
+    int x;
+    int y;
+    int width;
+    int height;
+    RenderTexture2D target;
+    Texture2D texture;
+} TilemapChunk;
 
 typedef struct Tilemap {
     Tile *gindex;
@@ -47,6 +57,8 @@ typedef struct Tilemap {
     bool *no_collision;
     bool *no_peak;
     int *coll_dy;
+    TilemapChunk *chunks;
+    int chunk_count;
 } Tilemap;
 
 #endif

@@ -1,4 +1,5 @@
 #include "tilemap_scripts.h"
+#include "constants.h"
 
 #include <ctype.h>
 #include <stdio.h>
@@ -194,7 +195,11 @@ static bool load_tilesets(Tilemap *map, const char *json, const char *end, const
         ImageFormat(&image, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
         ImageColorReplace(&image, set->alpha_color, BLANK);
         set->sheet = LoadTextureFromImage(image);
+#if RENDER_BACKEND == RENDER_BACKEND_SOFTWARE
+        set->image = image;
+#else
         UnloadImage(image);
+#endif
         if (!IsTextureValid(set->sheet)) return false;
         p = object_end + 1;
     }
@@ -269,6 +274,15 @@ void unload_map(Tilemap *map) {
     if (map->tilesets) {
         for (int i = 0; i < map->tileset_count; ++i) {
             if (IsTextureValid(map->tilesets[i].sheet)) UnloadTexture(map->tilesets[i].sheet);
+            if (IsImageValid(map->tilesets[i].image)) UnloadImage(map->tilesets[i].image);
+        }
+    }
+    if (map->chunks) {
+        for (int i = 0; i < map->chunk_count; ++i) {
+            if (IsRenderTextureValid(map->chunks[i].target))
+                UnloadRenderTexture(map->chunks[i].target);
+            else if (IsTextureValid(map->chunks[i].texture))
+                UnloadTexture(map->chunks[i].texture);
         }
     }
     free(map->gindex);
@@ -278,6 +292,7 @@ void unload_map(Tilemap *map) {
     free(map->no_collision);
     free(map->no_peak);
     free(map->coll_dy);
+    free(map->chunks);
     *map = (Tilemap){0};
 }
 

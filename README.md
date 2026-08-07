@@ -24,6 +24,14 @@ A simple 2D platformer written in C17 with raylib.
 
 Requires a C17 compiler, `pkg-config`, and raylib.
 
+The render options are compile-time flags in `src/constants.h`:
+
+* `RENDER_CHUNKS=1` enables the tilemap chunk cache; `0` draws visible tiles directly.
+* `RENDER_BACKEND=RENDER_BACKEND_SOFTWARE` composes chunks with raylib `Image` operations on the CPU.
+* `RENDER_BACKEND=RENDER_BACKEND_GPU` builds chunks through raylib render targets.
+
+Raylib still presents the final frame through its graphics context in both modes; “software” here refers to CPU tile composition, not a fully software window backend. Override a flag when compiling, for example: `gcc ... -DRENDER_CHUNKS=0`.
+
 ```bash
 ./run/dev.sh       # compila y ejecuta bin/dbg-linux/platformer
 ./run/build.sh     # bin/rel-linux/platformer
