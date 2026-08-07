@@ -49,6 +49,8 @@ void update_characters(Character *characters, int count, const InputState *input
     for (int i = 0; i < count; ++i) {
         Character *character = &characters[i];
         const CharacterBehavior *behavior = &character_behaviors[character->behavior_type];
+        const float previous_x = character->x;
+        const float previous_y = character->y;
         behavior->update(character, input);
 
         /* Preserve the original two-phase pygame collision order: X projects
@@ -89,6 +91,10 @@ void update_characters(Character *characters, int count, const InputState *input
             }
         }
         update_character_collider(character, max_y.coll_dy);
+        character->previous_x = previous_x;
+        character->previous_y = previous_y;
+        character->frame_dx = character->x - previous_x;
+        character->frame_dy = character->y - previous_y;
     }
 
     /* Dynamic collisions between characters. */

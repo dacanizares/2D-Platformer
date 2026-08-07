@@ -46,6 +46,10 @@ typedef struct Character {
     float y;
     float w;
     float h;
+    float previous_x;
+    float previous_y;
+    float frame_dx;
+    float frame_dy;
     CharacterAnim anim;
     CharacterBehaviorType behavior_type;
     /* Default state. */
