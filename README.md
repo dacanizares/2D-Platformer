@@ -1,35 +1,32 @@
 # 2D-Platformer
 
-A simple 2D Platformer built with PyGame.
+A simple 2D platformer written in C17 with raylib.
 
 ![2d platformer pygame](.docs/screenshot-2.png)
 
 ## Highlights
 
-* No OOP stuff were possible (no inheritance, no polymorphism, no virtual methods and no patterns -ever) but still Python, so you will find [data classes that are the closest thing in PY to a C-like struct](https://stackoverflow.com/questions/35988/c-like-structures-in-python) also some 3rd party PyGame classes.
+* Data-oriented character behaviors in `src/characters.c`.
 
-* Easy to extend and create custom behaviors (see *characters.py*).
-
-* Map drawing using single tiles or chunks to improve software rendering performance (see *game_render.py*).
+* Raylib rendering at a 600x400 logical resolution with pixel-perfect window scaling.
 
   ![2d platformer pygame chunks debug tools](.docs/screenshot-3.png)
 
-* Custom [Tiled](https://www.mapeditor.org/) support including character spawning (see *tilemap_scripts.py*).
+* Custom [Tiled](https://www.mapeditor.org/) JSON support, including character spawning and collision metadata.
 
 * Also includes:
 
-    * Static collisions against a tile-based map and dynamic collisions between characters (see *game_scripts.py*).
-    * Side scrolling for a tile-based map with completely aligned cameras and using offsets (see *game_render.py*).
-    * Character sprite-animations updated according to entity state (see *game_render.py*).
+    * Static tile collisions and dynamic character collisions.
+    * Offset-based side-scrolling camera.
+    * State-driven character sprite animations.
 
-## Instructions
+## Build
 
-* Install Python *3.12.x* from https://www.python.org/
+Requires a C17 compiler, `pkg-config`, and raylib.
 
-* Run this command to download PyGame:
+```bash
+./run/dev.sh       # compila y ejecuta bin/dbg-linux/platformer
+./run/build.sh     # bin/rel-linux/platformer
+```
 
-    ```
-    pip install -U pygame --user
-    ```
-
-* Open folder with VSCodium (VSCode) and press F5.
+Run either executable from the project root so it can find `maps/`, `graphics/`, and `sound/`.
