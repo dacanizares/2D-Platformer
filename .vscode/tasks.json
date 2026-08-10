@@ -1,0 +1,72 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "run debug (Windows)",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/run/dev.ps1"
+      ],
+      "group": "test",
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "run debug (Linux)",
+      "type": "process",
+      "command": "${workspaceFolder}/run/dev.sh",
+      "args": [],
+      "group": "test",
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "build debug (Windows)",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/run/dev.ps1",
+        "-BuildOnly"
+      ],
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "build debug (Linux)",
+      "type": "process",
+      "command": "${workspaceFolder}/run/dev.sh",
+      "args": ["--build-only"],
+      "group": "build",
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "build release (Windows)",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/run/build.ps1"
+      ],
+      "group": "build",
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "build release (Linux)",
+      "type": "process",
+      "command": "${workspaceFolder}/run/build.sh",
+      "args": [],
+      "group": "build",
+      "problemMatcher": ["$gcc"]
+    }
+  ]
+}

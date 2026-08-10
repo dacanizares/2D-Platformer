@@ -14,4 +14,7 @@ gcc -std=c17 -pedantic -Wall -Wextra -Wshadow -Wconversion \
     "${raylib_flags[@]}" -Wl,-rpath,"$raylib_libdir" -lm -pthread
 
 echo "Built bin/dbg-linux/platformer"
+if [[ "${1:-}" == "--build-only" ]]; then
+    exit 0
+fi
 exec bin/dbg-linux/platformer

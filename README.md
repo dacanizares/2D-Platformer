@@ -33,8 +33,16 @@ The render options are compile-time flags in `src/constants.h`:
 Raylib still presents the final frame through its graphics context in both modes; “software” here refers to CPU tile composition, not a fully software window backend. Override a flag when compiling, for example: `gcc ... -DRENDER_CHUNKS=0`.
 
 ```bash
-./run/dev.sh       # compila y ejecuta bin/dbg-linux/platformer
+./run/dev.sh       # builds and runs bin/dbg-linux/platformer
 ./run/build.sh     # bin/rel-linux/platformer
+```
+
+On Windows, use MSYS2 UCRT64 (GCC, GDB, pkg-config, and raylib):
+
+```powershell
+.\run\dev.ps1             # builds and runs bin/dbg-windows/platformer.exe
+.\run\dev.ps1 -BuildOnly  # builds the debug version without running it
+.\run\build.ps1           # bin/rel-windows/platformer.exe
 ```
 
 Run either executable from the project root so it can find `maps/`, `graphics/`, and `sound/`.
