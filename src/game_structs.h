@@ -62,8 +62,6 @@ typedef struct Character {
     bool land;
     bool right;
     bool left;
-    bool up;
-    bool down;
     bool jump;
     bool stop;
 } Character;
@@ -71,8 +69,6 @@ typedef struct Character {
 typedef struct InputState {
     bool right;
     bool left;
-    bool up;
-    bool down;
     bool jump;
     bool stop;
 } InputState;

@@ -19,9 +19,7 @@ InputState get_events(void) {
     return (InputState){
         .right = IsKeyDown(KEY_RIGHT),
         .left = IsKeyDown(KEY_LEFT),
-        .up = IsKeyDown(KEY_UP),
-        .down = IsKeyDown(KEY_DOWN),
-        .jump = IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL),
+        .jump = IsKeyDown(KEY_UP),
         .stop = IsKeyDown(KEY_SPACE)
     };
 }

@@ -11,7 +11,7 @@ static void on_peak(Character *character) {
 
 static void on_air(Character *character) {
     character->land = false;
-    //character->vy += GRAVITY;
+    character->vy += GRAVITY;
     if (character->vy > MAX_VY) character->vy = MAX_VY;
 }
 
@@ -64,12 +64,7 @@ void update_character(Character *character, const InputState *input) {
         /* Movement. */
         if (character->right) character->x += VEL_X;
         else if (character->left) character->x -= VEL_X;
-        if (character->behavior_type == CHARACTER_PLAYER) {
-            character->vy = 0;
-            if (character->up) character->vy = -VEL_X;
-            else if (character->down) character->vy = VEL_X;
-            else if (character->jump) character->vy = -VEL_Y;
-        } else if (character->has_coll_enemy) {
+        if (character->has_coll_enemy) {
             character->vy = -VY_COLLIDE;
             character->has_coll_enemy = false;
         } else if (character->land && character->jump) {
@@ -86,8 +81,6 @@ void update_player(Character *player, const InputState *input) {
     if (input->left && !player->left) player->direction = false;
     player->right = input->right;
     player->left = input->left;
-    player->up = input->up;
-    player->down = input->down;
     player->jump = input->jump;
     player->stop = input->stop;
     update_character(player, input);
